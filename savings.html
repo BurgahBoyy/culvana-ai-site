@@ -71,7 +71,32 @@
   .finetune summary::-webkit-details-marker{display:none}
   .finetune summary .car{display:inline-block;transition:transform .15s;font-size:11px}
   .finetune[open] summary .car{transform:rotate(90deg)}
-  .finetune .field:first-of-type{margin-top:10px}
+  .finetune-body{background:var(--bg-soft);border-radius:10px;padding:14px 16px 4px;margin-top:2px}
+  .finetune-body .field:first-of-type{margin-top:8px}
+  .finetune summary .count{
+    font-weight:500;color:var(--mute);background:var(--bg-soft);border-radius:999px;
+    padding:2px 9px;font-size:11.5px;margin-left:2px
+  }
+
+  /* DEPTH. Two flat-bordered boxes side by side reads like a spreadsheet. A little lift and, on the
+     result card, the same blurred-blob mesh the hero uses (much smaller, much quieter) ties this page
+     back to the rest of the site instead of looking like a tool bolted on afterwards. */
+  .calc .card{box-shadow:0 20px 46px -32px rgba(15,23,42,.22)}
+  html[data-theme="dark"] .calc .card{box-shadow:0 20px 46px -26px rgba(0,0,0,.55)}
+  .result{position:sticky;top:86px;isolation:isolate;overflow:hidden;box-shadow:0 26px 60px -28px rgba(0,0,0,.5)}
+  .result .rmesh{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit}
+  .result .rmesh i{position:absolute;border-radius:50%;filter:blur(70px);animation:rdrift 20s ease-in-out infinite}
+  .result .rmesh .rb1{width:280px;height:280px;background:#2670F6;opacity:.30;top:-120px;right:-70px}
+  .result .rmesh .rb2{width:240px;height:240px;background:#7C3AED;opacity:.20;bottom:-110px;left:-60px;animation-delay:-9s}
+  @keyframes rdrift{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(24px,-18px) scale(1.08)}
+  }
+  @media(prefers-reduced-motion:reduce){ .result .rmesh i{animation:none} }
+
+  /* Operation card header: an icon chip like every other card on the site, so this page stops looking
+     like a separate tool wearing the site's fonts. */
+  .calc .ico{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -111,8 +136,11 @@
 
   <div>
     <div class="card">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap">
-        <h3 style="margin:0">Your operation</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="ico">🧮</div>
+          <h3 style="margin:0">Your operation</h3>
+        </div>
         <div style="font-size:12px;color:var(--mute);white-space:nowrap">Saved on this device &middot; <a href="#" id="resetCalc" style="color:var(--brand);font-weight:600;text-decoration:none">Reset</a></div>
       </div>
 
@@ -154,7 +182,8 @@
       </div>
 
       <details class="finetune">
-        <summary><span class="car">&#9656;</span> Fine-tune these numbers &middot; 9 fields, already filled in</summary>
+        <summary><span class="car">&#9656;</span> Fine-tune these numbers <span class="count">9 fields, already filled in</span></summary>
+        <div class="finetune-body">
 
         <div class="field">
           <label>What you pay your processor now</label>
@@ -235,6 +264,7 @@
             <div class="numbox"><input id="wage" type="number" min="0" step="1" value="22"></div>
           </div>
           <div class="hint">Manager or bookkeeper rate, loaded. We assume 4 minutes per invoice, typed by hand, that's conservative.</div>
+        </div>
         </div>
       </details>
     </div>
@@ -379,16 +409,24 @@ kind.addEventListener('change', function(){
    input stays the single source of truth (calc() and persistence never touch the sliders directly),
    so dragging and typing always agree with each other. */
 var SLIDER_IDS = ['locs','vol','rate','pertxn','ticket','sw','inv','ops','purch','recover','wage'];
+
+/* Paint the filled portion of the track in brand blue, the rest in the line colour. A slider with no
+   fill indicator makes you stare at the thumb to read a value you should be able to see at a glance. */
+function paintSlider(rng){
+  var min = parseFloat(rng.min), max = parseFloat(rng.max), val = parseFloat(rng.value);
+  var pct = max > min ? Math.max(0, Math.min(100, (val - min) / (max - min) * 100)) : 0;
+  rng.style.background = 'linear-gradient(to right, var(--brand) ' + pct + '%, var(--line) ' + pct + '%)';
+}
 function syncSliderFromNumber(id){
   var num = document.getElementById(id), rng = document.getElementById(id + '_s');
-  if (num && rng) rng.value = num.value;
+  if (num && rng) { rng.value = num.value; paintSlider(rng); }
 }
 function syncAllSliders(){ SLIDER_IDS.forEach(syncSliderFromNumber); }
 SLIDER_IDS.forEach(function(id){
   var num = document.getElementById(id), rng = document.getElementById(id + '_s');
   if (!num || !rng) return;
-  num.addEventListener('input', function(){ rng.value = num.value; });
-  rng.addEventListener('input', function(){ num.value = rng.value; calc(); });
+  num.addEventListener('input', function(){ rng.value = num.value; paintSlider(rng); });
+  rng.addEventListener('input', function(){ num.value = rng.value; paintSlider(rng); calc(); });
 });
 syncAllSliders();
 
@@ -467,6 +505,7 @@ function calc(){
   ];
 
   var html = ''
+    + '<div class="rmesh"><i class="rb1"></i><i class="rb2"></i></div>'
     + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;font-weight:700">You would save</div>'
     + '<div class="big ' + (trueSaved >= 0 ? 'save' : 'cost') + '">' + usd(Math.abs(trueSaved)) + '<span style="font-size:17px;color:#64748B;font-weight:500">/month</span></div>'
     + '<div style="color:#94A3B8;font-size:14px;margin-bottom:10px">'
