@@ -37,6 +37,41 @@
   .save{color:#34D399;font-weight:700}
   .cost{color:#F87171}
   @media(max-width:860px){.calc{grid-template-columns:1fr}.result{position:static}}
+
+  /* SLIDERS. Fourteen typed number fields is a form. A slider you can drag while glancing at the total
+     move live is a toy, and toys get finished. The number box next to each one stays, for anyone who
+     wants to type an exact figure instead of dragging to it. */
+  .slidewrap{display:flex;align-items:center;gap:12px}
+  .slidewrap input[type=range]{
+    flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:999px;
+    background:var(--line);outline:none;margin:0;cursor:pointer
+  }
+  .slidewrap input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--brand);border:3px solid var(--card);box-shadow:0 1px 3px rgba(0,0,0,.3);cursor:pointer
+  }
+  .slidewrap input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;background:var(--brand);border:3px solid var(--card);
+    box-shadow:0 1px 3px rgba(0,0,0,.3);cursor:pointer
+  }
+  .slidewrap .numbox{flex:none;width:100px}
+  .slidewrap .numbox input{
+    width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+    font-size:14px;font-family:inherit;text-align:right
+  }
+
+  /* FINE-TUNE. Three fields up front (kind, locations, volume) get a real number on screen instantly.
+     The other nine are pre-filled the moment you pick a kind, tucked behind a disclosure so the form
+     never looks like fourteen fields even though every one of them still argues with you if it's wrong. */
+  .finetune{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}
+  .finetune summary{
+    cursor:pointer;font-size:13.5px;font-weight:700;color:var(--brand);list-style:none;
+    display:flex;align-items:center;gap:7px;user-select:none;padding:10px 0
+  }
+  .finetune summary::-webkit-details-marker{display:none}
+  .finetune summary .car{display:inline-block;transition:transform .15s;font-size:11px}
+  .finetune[open] summary .car{transform:rotate(90deg)}
+  .finetune .field:first-of-type{margin-top:10px}
 </style>
 </head>
 <body>
@@ -96,77 +131,112 @@
         <div class="hint" id="kindHint">Tables, courses, tips. The hardware bill is usually the biggest surprise here.</div>
       </div>
 
-      <div class="field"><label>Locations</label><input id="locs" type="number" min="1" value="1"></div>
+      <div class="field">
+        <label>Locations</label>
+        <div class="slidewrap">
+          <input type="range" id="locs_s" min="1" max="50" step="1" value="1" tabindex="-1">
+          <div class="numbox"><input id="locs" type="number" min="1" value="1"></div>
+        </div>
+      </div>
 
       <div class="field">
         <label>Monthly card volume, per location</label>
-        <input id="vol" type="number" min="0" step="500" value="60000">
+        <div class="slidewrap">
+          <input type="range" id="vol_s" min="0" max="200000" step="500" value="60000" tabindex="-1">
+          <div class="numbox"><input id="vol" type="number" min="0" step="500" value="60000"></div>
+        </div>
         <div class="hint">The number on your merchant statement. It's the single biggest lever here, above $20,000 your platform fee goes to zero.</div>
       </div>
 
-      <div class="field">
-        <label>What you pay your processor now</label>
-        <input id="rate" type="number" min="0" step="0.05" value="3.25">
-        <div class="hint">Effective rate, as a %. Take last month's total fees ÷ total card volume × 100. Most operators are between 2.9% and 3.6% once everything is in.</div>
+      <div style="font-size:12px;color:var(--mute);margin:2px 0 4px;line-height:1.5">
+        Picking a kind of place already fills in realistic numbers for everything below, based on operators
+        like yours. Open it up and fix anything that's wrong, that's the whole point of the exercise.
       </div>
 
-      <div class="field">
-        <label>Per-transaction fee you pay now (cents)</label>
-        <input id="pertxn" type="number" min="0" step="0.01" value="0.15">
-        <div class="hint">The flat fee on every swipe, on top of the percentage. Most operators pay 15 to 20 cents. Culvana charges 10. It looks small and it is not: it is charged on every single transaction.</div>
-      </div>
+      <details class="finetune">
+        <summary><span class="car">&#9656;</span> Fine-tune these numbers &middot; 9 fields, already filled in</summary>
 
-      <div class="field">
-        <label>Average ticket ($)</label>
-        <input id="ticket" type="number" min="1" step="1" value="28">
-        <div class="hint">Card volume divided by the flat fee decides how many transactions you run, and that is what the per-swipe fee is charged on. A coffee shop and a steakhouse doing the same volume pay wildly different flat fees.</div>
-      </div>
+        <div class="field">
+          <label>What you pay your processor now</label>
+          <div class="slidewrap">
+            <input type="range" id="rate_s" min="0" max="5" step="0.05" value="3.25" tabindex="-1">
+            <div class="numbox"><input id="rate" type="number" min="0" step="0.05" value="3.25"></div>
+          </div>
+          <div class="hint">Effective rate, as a %. Take last month's total fees ÷ total card volume × 100. Most operators are between 2.9% and 3.6% once everything is in.</div>
+        </div>
 
-      <div class="field">
-        <label>Restaurant software you pay for today ($/mo, per location)</label>
-        <input id="sw" type="number" min="0" step="10" value="330">
-        <div class="hint">Inventory, costing, back-office. Add up every subscription, most people forget two.</div>
-      </div>
+        <div class="field">
+          <label>Per-transaction fee you pay now ($)</label>
+          <div class="slidewrap">
+            <input type="range" id="pertxn_s" min="0" max="0.5" step="0.01" value="0.15" tabindex="-1">
+            <div class="numbox"><input id="pertxn" type="number" min="0" step="0.01" value="0.15"></div>
+          </div>
+          <div class="hint">The flat fee on every swipe, on top of the percentage &mdash; enter it in dollars, e.g. 0.15 for 15&cent;. Most operators pay 15 to 20 cents. Culvana charges 10. It looks small and it is not: it is charged on every single transaction.</div>
+        </div>
 
-      <div class="field">
-        <label>POS software fee ($/mo, per location)</label>
-        <input id="pos" type="number" min="0" step="10" value="79">
-      </div>
+        <div class="field">
+          <label>Average ticket ($)</label>
+          <div class="slidewrap">
+            <input type="range" id="ticket_s" min="1" max="1000" step="1" value="28" tabindex="-1">
+            <div class="numbox"><input id="ticket" type="number" min="1" step="1" value="28"></div>
+          </div>
+          <div class="hint">Card volume divided by the flat fee decides how many transactions you run, and that is what the per-swipe fee is charged on. A coffee shop and a steakhouse doing the same volume pay wildly different flat fees.</div>
+        </div>
 
-      <div class="field">
-        <label>Vendor invoices a month, per location</label>
-        <input id="inv" type="number" min="0" value="80">
-        <div class="hint">Culvana reads them. Somebody in your building is typing them in right now.</div>
-      </div>
+        <div class="field">
+          <label>Software you pay for today ($/mo, per location)</label>
+          <div class="slidewrap">
+            <input type="range" id="sw_s" min="0" max="1000" step="10" value="409" tabindex="-1">
+            <div class="numbox"><input id="sw" type="number" min="0" step="10" value="409"></div>
+          </div>
+          <div class="hint">POS, inventory, costing, back-office &mdash; every subscription added up. Most people forget two.</div>
+        </div>
 
-      <div class="field">
-        <label>Hours a month counting, ordering and reporting (per location)</label>
-        <input id="ops" type="number" min="0" step="1" value="28">
-        <div class="hint">Weekly stock counts, building orders off par levels, pulling numbers together at month end. Culvana does not delete this work, it does most of it. We assume 70% and leave the rest as a human checking.</div>
-      </div>
+        <div class="field">
+          <label>Vendor invoices a month, per location</label>
+          <div class="slidewrap">
+            <input type="range" id="inv_s" min="0" max="300" step="5" value="80" tabindex="-1">
+            <div class="numbox"><input id="inv" type="number" min="0" value="80"></div>
+          </div>
+          <div class="hint">Culvana reads them. Somebody in your building is typing them in right now.</div>
+        </div>
 
-      <div class="field">
-        <label>Food and beverage purchases a month, per location ($)</label>
-        <input id="purch" type="number" min="0" step="500" value="24000">
-        <div class="hint">Your total food spend. This is the number the whole product exists to protect.</div>
-      </div>
+        <div class="field">
+          <label>Hours a month counting, ordering and reporting (per location)</label>
+          <div class="slidewrap">
+            <input type="range" id="ops_s" min="0" max="100" step="1" value="28" tabindex="-1">
+            <div class="numbox"><input id="ops" type="number" min="0" step="1" value="28"></div>
+          </div>
+          <div class="hint">Weekly stock counts, building orders off par levels, pulling numbers together at month end. Culvana does not delete this work, it does most of it. We assume 70% and leave the rest as a human checking.</div>
+        </div>
 
-      <div class="field">
-        <label>Margin you think Culvana recovers (%)</label>
-        <input id="recover" type="number" min="0" max="10" step="0.1" value="1.5">
-        <div class="hint">Price creep caught the day it lands, portions costed, dishes repriced before the month closes. We default to a deliberately cautious 1.5%. <b>Set it to 0 if you do not believe us.</b> Everything above still stands on its own.</div>
-      </div>
+        <div class="field">
+          <label>Food and beverage purchases a month, per location ($)</label>
+          <div class="slidewrap">
+            <input type="range" id="purch_s" min="0" max="100000" step="500" value="24000" tabindex="-1">
+            <div class="numbox"><input id="purch" type="number" min="0" step="500" value="24000"></div>
+          </div>
+          <div class="hint">Your total food spend. This is the number the whole product exists to protect.</div>
+        </div>
 
-      <div class="field">
-        <label>What that person costs you, per hour</label>
-        <input id="wage" type="number" min="0" step="1" value="22">
-        <div class="hint">Manager or bookkeeper rate, loaded. We assume 4 minutes per invoice, typed by hand, that's conservative.</div>
-      </div>
+        <div class="field">
+          <label>Margin you think Culvana recovers (%)</label>
+          <div class="slidewrap">
+            <input type="range" id="recover_s" min="0" max="10" step="0.1" value="1.5" tabindex="-1">
+            <div class="numbox"><input id="recover" type="number" min="0" max="10" step="0.1" value="1.5"></div>
+          </div>
+          <div class="hint">Price creep caught the day it lands, portions costed, dishes repriced before the month closes. We default to a deliberately cautious 1.5%. <b>Set it to 0 if you do not believe us.</b> Everything above still stands on its own.</div>
+        </div>
 
-      <div class="field">
-        <label>Paper, printers, toner, filing ($/mo)</label>
-        <input id="paper" type="number" min="0" step="5" value="60">
-      </div>
+        <div class="field">
+          <label>What that person costs you, per hour</label>
+          <div class="slidewrap">
+            <input type="range" id="wage_s" min="0" max="60" step="1" value="22" tabindex="-1">
+            <div class="numbox"><input id="wage" type="number" min="0" step="1" value="22"></div>
+          </div>
+          <div class="hint">Manager or bookkeeper rate, loaded. We assume 4 minutes per invoice, typed by hand, that's conservative.</div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -245,28 +315,82 @@ var HINTS = {
   commissary:'You buy for everyone. Invoice volume is your biggest cost of admin, and it\'s the thing AI removes.'
 };
 var kind = document.getElementById('kind');
-kind.addEventListener('change', function(){ document.getElementById('kindHint').textContent = HINTS[kind.value]; });
 
 /* PERSISTENCE. This calculator asks for competitor pricing, real vendor statements and internal
    numbers, so losing it on a refresh or an accidental back-button is not a minor bug. Every input is
    saved to this device on every keystroke and restored before the first render. Nothing leaves the
    browser: this is localStorage, not a server, so it's tied to this device and this browser only. */
-var FIELD_IDS = ['kind','locs','vol','rate','pertxn','ticket','sw','pos','inv','ops','purch','recover','wage','paper'];
+var FIELD_IDS = ['kind','locs','vol','rate','pertxn','ticket','sw','inv','ops','purch','recover','wage'];
 var DEFAULTS = {};
 FIELD_IDS.forEach(function(id){ DEFAULTS[id] = document.getElementById(id).value; });
 
-try {
-  var savedInputs = JSON.parse(localStorage.getItem('cv-calc-inputs') || 'null');
-  if (savedInputs) {
-    FIELD_IDS.forEach(function(id){
-      if (savedInputs[id] !== undefined) document.getElementById(id).value = savedInputs[id];
-    });
-  }
-} catch(e){}
+var savedInputs = null;
+try { savedInputs = JSON.parse(localStorage.getItem('cv-calc-inputs') || 'null'); } catch(e){}
+if (savedInputs) {
+  FIELD_IDS.forEach(function(id){
+    if (savedInputs[id] !== undefined) document.getElementById(id).value = savedInputs[id];
+  });
+}
+/* Only a session with nothing saved yet gets auto-filled when the "kind of place" changes. A
+   returning visitor's real numbers are never overwritten just because they clicked the dropdown. */
+var userHasSavedData = !!savedInputs;
+
 document.getElementById('kindHint').textContent = HINTS[kind.value];
 
 var usd = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
 var v = function(id){ return parseFloat(document.getElementById(id).value) || 0; };
+
+/* PREPOPULATION. Fourteen blank fields is homework. Picking "Bar or club" should already look like a
+   bar's numbers, not a copy of the full-service restaurant defaults with a different label on top.
+   These aren't guesses pulled from nowhere, they follow directly from the per-kind hints above: small
+   tickets and high volume for QSR, big infrequent tickets for catering, and so on. */
+var KIND_DEFAULTS = {
+  fsr:        {rate:3.25, pertxn:0.15, ticket:34,  sw:409, inv:80,  ops:28, purch:24000, wage:22},
+  qsr:        {rate:3.15, pertxn:0.15, ticket:13,  sw:320, inv:60,  ops:24, purch:20000, wage:19},
+  bar:        {rate:3.35, pertxn:0.18, ticket:19,  sw:260, inv:45,  ops:20, purch:15000, wage:21},
+  cafe:       {rate:3.10, pertxn:0.15, ticket:9,   sw:240, inv:55,  ops:22, purch:12000, wage:18},
+  catering:   {rate:3.20, pertxn:0.20, ticket:900, sw:380, inv:35,  ops:30, purch:30000, wage:24},
+  ghost:      {rate:3.30, pertxn:0.18, ticket:42,  sw:350, inv:110, ops:34, purch:28000, wage:20},
+  multi:      {rate:3.20, pertxn:0.15, ticket:30,  sw:420, inv:90,  ops:30, purch:26000, wage:22, locs:5},
+  commissary: {rate:3.00, pertxn:0.12, ticket:500, sw:300, inv:140, ops:40, purch:45000, wage:23}
+};
+
+function applyKindDefaults(kindVal){
+  var d = KIND_DEFAULTS[kindVal];
+  if (!d) return;
+  ['rate','pertxn','ticket','sw','inv','ops','purch','wage'].forEach(function(id){
+    document.getElementById(id).value = d[id];
+  });
+  // Never clobber a locations count someone already typed in. Only nudge it for multi-unit, and only
+  // while it's still sitting at its untouched default of 1.
+  if (d.locs && v('locs') <= 1) document.getElementById('locs').value = d.locs;
+}
+
+kind.addEventListener('change', function(){
+  document.getElementById('kindHint').textContent = HINTS[kind.value];
+  if (!userHasSavedData) {
+    applyKindDefaults(kind.value);
+    syncAllSliders();
+    calc();
+  }
+});
+
+/* SLIDERS. Each range input mirrors a number input of the same id with an "_s" suffix. The number
+   input stays the single source of truth (calc() and persistence never touch the sliders directly),
+   so dragging and typing always agree with each other. */
+var SLIDER_IDS = ['locs','vol','rate','pertxn','ticket','sw','inv','ops','purch','recover','wage'];
+function syncSliderFromNumber(id){
+  var num = document.getElementById(id), rng = document.getElementById(id + '_s');
+  if (num && rng) rng.value = num.value;
+}
+function syncAllSliders(){ SLIDER_IDS.forEach(syncSliderFromNumber); }
+SLIDER_IDS.forEach(function(id){
+  var num = document.getElementById(id), rng = document.getElementById(id + '_s');
+  if (!num || !rng) return;
+  num.addEventListener('input', function(){ rng.value = num.value; });
+  rng.addEventListener('input', function(){ num.value = rng.value; calc(); });
+});
+syncAllSliders();
 
 function calc(){
   var locs = Math.max(1, v('locs'));
@@ -274,7 +398,7 @@ function calc(){
   var rate = v('rate') / 100;
   var pertxn = v('pertxn');      // their flat fee per swipe
   var ticket = Math.max(1, v('ticket'));
-  var sw   = v('sw'), pos = v('pos'), inv = v('inv'), wage = v('wage'), paper = v('paper');
+  var sw   = v('sw'), inv = v('inv'), wage = v('wage');
 
   // THE TRANSACTION COUNT. This is the number the flat fee is charged on, and it is why a cafe and a steakhouse
   // doing identical volume pay wildly different processing bills. Asking for the average ticket instead of
@@ -283,9 +407,9 @@ function calc(){
 
   // ---- what they pay today, per location, per month
   var payNowProc  = vol * rate + txns * pertxn;
-  var payNowSoft  = sw + pos;
+  var payNowSoft  = sw;                       // POS + back-office + inventory, one number now, not two
   var payNowLabor = inv * (4/60) * wage;      // 4 minutes an invoice, by hand
-  var payNowPaper = paper;
+  var payNowPaper = 40;                       // printers, toner, filing. Small and steady, not worth a field.
   var payNowTotal = payNowProc + payNowSoft + payNowLabor + payNowPaper;
 
   // ---- what they'd pay us
@@ -336,7 +460,7 @@ function calc(){
     ['Processing rate',                            vol * rate,     vol * 0.025],
     ['Per-swipe fee<div style="font-size:11px;color:#64748B;font-weight:400">'
       + Math.round(txns).toLocaleString('en-US') + ' transactions a month</div>', txns * pertxn, txns * 0.10],
-    ['Software + POS fees',                        payNowSoft,     culvPlat],
+    ['Software you pay for today',                 payNowSoft,     culvPlat],
     ['AI (invoices, answers)',                     0,              culvAi],
     ['Typing invoices in',                         payNowLabor,    0],
     ['Paper, printing, filing',                    payNowPaper,    0]
@@ -483,6 +607,8 @@ if (resetBtn) {
     e.preventDefault();
     FIELD_IDS.forEach(function(id){ document.getElementById(id).value = DEFAULTS[id]; });
     document.getElementById('kindHint').textContent = HINTS[kind.value];
+    userHasSavedData = false; // a fresh reset behaves like a first-time visit: kind changes prefill again
+    syncAllSliders();
     calc();
   });
 }
