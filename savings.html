@@ -76,7 +76,10 @@
 
   <div>
     <div class="card">
-      <h3 style="margin-bottom:18px">Your operation</h3>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap">
+        <h3 style="margin:0">Your operation</h3>
+        <div style="font-size:12px;color:var(--mute);white-space:nowrap">Saved on this device &middot; <a href="#" id="resetCalc" style="color:var(--brand);font-weight:600;text-decoration:none">Reset</a></div>
+      </div>
 
       <div class="field">
         <label>What kind of place is it?</label>
@@ -243,6 +246,24 @@ var HINTS = {
 };
 var kind = document.getElementById('kind');
 kind.addEventListener('change', function(){ document.getElementById('kindHint').textContent = HINTS[kind.value]; });
+
+/* PERSISTENCE. This calculator asks for competitor pricing, real vendor statements and internal
+   numbers, so losing it on a refresh or an accidental back-button is not a minor bug. Every input is
+   saved to this device on every keystroke and restored before the first render. Nothing leaves the
+   browser: this is localStorage, not a server, so it's tied to this device and this browser only. */
+var FIELD_IDS = ['kind','locs','vol','rate','pertxn','ticket','sw','pos','inv','ops','purch','recover','wage','paper'];
+var DEFAULTS = {};
+FIELD_IDS.forEach(function(id){ DEFAULTS[id] = document.getElementById(id).value; });
+
+try {
+  var savedInputs = JSON.parse(localStorage.getItem('cv-calc-inputs') || 'null');
+  if (savedInputs) {
+    FIELD_IDS.forEach(function(id){
+      if (savedInputs[id] !== undefined) document.getElementById(id).value = savedInputs[id];
+    });
+  }
+} catch(e){}
+document.getElementById('kindHint').textContent = HINTS[kind.value];
 
 var usd = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
 var v = function(id){ return parseFloat(document.getElementById(id).value) || 0; };
@@ -440,11 +461,32 @@ function calc(){
   /* Remember what they would save, so every other page can say it back to them. This is the site's only
      urgency mechanic and it is entirely their own arithmetic. */
   try { localStorage.setItem('cv-save', String(Math.max(0, trueSaved))); } catch(e){}
+
+  /* Remember what they typed, full stop. Runs on every keystroke; cheap, and losing this data is worse
+     than a redundant write. */
+  try {
+    var state = {};
+    FIELD_IDS.forEach(function(id){ state[id] = document.getElementById(id).value; });
+    localStorage.setItem('cv-calc-inputs', JSON.stringify(state));
+  } catch(e){}
 }
 
-['kind','locs','vol','rate','pertxn','ticket','sw','pos','inv','ops','purch','recover','wage','paper'].forEach(function(id){
-  document.getElementById(id).addEventListener('input', calc);
+FIELD_IDS.forEach(function(id){
+  var el = document.getElementById(id);
+  el.addEventListener('input', calc);
+  el.addEventListener('change', calc); // belt and braces: some browsers only fire 'change' on <select>
 });
+
+var resetBtn = document.getElementById('resetCalc');
+if (resetBtn) {
+  resetBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    FIELD_IDS.forEach(function(id){ document.getElementById(id).value = DEFAULTS[id]; });
+    document.getElementById('kindHint').textContent = HINTS[kind.value];
+    calc();
+  });
+}
+
 calc();
 
 /**
