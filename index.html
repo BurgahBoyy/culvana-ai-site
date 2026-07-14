@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Culvana, the AI-native restaurant platform. No hardware. No paper.</title>
+<meta name="description" content="One platform for the whole restaurant: POS, inventory, recipe costing, purchasing, books and payments. No hardware to buy. No paper to file. $55 a location, free if you process with us.">
+<link rel="icon" href="culvana-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
+
+<!-- WHAT A LINK TO THIS PAGE LOOKS LIKE WHEN SOMEBODY SHARES IT.
+     Without these, a chef pasting culvana.com into a WhatsApp group or a LinkedIn post gets a bare grey URL.
+     That is a conversion loss you never see in analytics because the click never happens. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Culvana">
+<meta property="og:title" content="Your food cost went up 4% last month and nobody told you.">
+<meta property="og:description" content="One platform for the whole restaurant. No hardware. No paper. $55 a location, or free if you process with us.">
+<meta property="og:image" content="https://culvana.ai/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://culvana.ai/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your food cost went up 4% last month and nobody told you.">
+<meta name="twitter:description" content="AI-native, hardware-free, paperless. $55 a location.">
+<meta name="twitter:image" content="https://culvana.ai/og.png">
+<link rel="canonical" href="https://culvana.ai/">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+
+<!-- Structured data. This is how a search result shows a price and a rating instead of a grey snippet. -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Culvana",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "description":"AI-native restaurant management platform. POS, inventory, recipe costing, purchasing, books and payments in one system. No hardware, no paper.",
+  "offers":{"@type":"Offer","price":"55","priceCurrency":"USD","description":"Per location per month. Waived above $20,000/mo in card volume."},
+  "publisher":{"@type":"Organization","name":"Culvana","url":"https://culvana.ai"}
+}
+</script>
+<link rel="stylesheet" href="style.css">
+<script>
+/* THEME. Set before first paint, from an inline script in <head>, so a dark-mode visitor never gets a white
+   flash. Doing this in a deferred script is the single most common way a dark theme feels broken. */
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = saved || (sysDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#who">Who it's for</a>
+      <a href="savings.html">What you'll save</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="https://app.culvana.com" style="font-size:14.5px;font-weight:600;color:var(--ink-soft)">Sign in</a>
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<header class="hero">
+  <div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="wrap">
+    <div class="eyebrow rv in" style="color:#7DD3FC">AI-native. Hardware-free. Paperless.</div>
+    <h1 class="rv rv-1">Your food cost went up <span class="grad">4% last month</span> and nobody told you.</h1>
+    <p class="lead rv rv-2">
+      Your vendors raised prices. Your margin moved. Your P&amp;L will find out in three weeks, and by then you
+      will have sold two thousand plates at the wrong price. Culvana reads every invoice the day it lands and
+      tells you the same afternoon.
+    </p>
+    <div class="cta rv rv-3">
+      <a class="btn btn-p" href="savings.html">Show me what it is costing me &rarr;</a>
+      <a class="btn btn-g" href="#talk">Book a demo</a>
+    </div>
+
+    <div class="grid g3 rv rv-4" style="margin-top:56px;gap:30px">
+      <div>
+        <div class="stat" data-to="4" data-suffix="%">0%</div>
+        <div style="font-size:13.5px;color:#94A3B8;margin-top:6px">Average vendor price creep a quarter. Invisible until the P&amp;L.</div>
+      </div>
+      <div>
+        <div class="stat" data-to="80" data-prefix="$" data-suffix="0/mo">$0</div>
+        <div style="font-size:13.5px;color:#94A3B8;margin-top:6px">What a typical operator overpays for software they already have.</div>
+      </div>
+      <div>
+        <div class="stat" data-to="0" data-prefix="$" data-suffix="">$0</div>
+        <div style="font-size:13.5px;color:#94A3B8;margin-top:6px">Hardware you buy from us. There is none.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- THE PROBLEM. Named plainly, because every operator already knows it and pretending otherwise insults them. -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The problem</div>
+    <h2 class="rv">Your data is already in the building. It is just <span style="color:var(--danger)">trapped</span>.</h2>
+    <p class="sub">
+      The invoice is in a shoebox. The count is on a clipboard. The recipe is in the chef's head. The sales are in
+      a POS that won't export. So the one question that decides whether you make money this month, <em>what did that
+      plate actually cost me today?</em>, takes a week to answer and is wrong by the time you have it.
+    </p>
+    <div class="grid g3">
+      <div class="card lift rv">
+        <div class="ico">📄</div>
+        <h3>Paper in, nothing out</h3>
+        <p>Invoices get typed into a spreadsheet by someone at 11pm, or not at all. Prices move 4% and nobody notices until the P&L.</p>
+      </div>
+      <div class="card lift rv">
+        <div class="ico">🧾</div>
+        <h3>Software that doesn't add up</h3>
+        <p>A POS here, an inventory app there, a costing tool, a bookkeeper. Four subscriptions, four logins, and none of the numbers agree.</p>
+      </div>
+      <div class="card lift rv">
+        <div class="ico">💳</div>
+        <h3>Processing you never renegotiated</h3>
+        <p>You signed a merchant agreement years ago and haven't looked at it since. It's quietly the second-biggest cheque you write.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WATCH IT WORK. Nobody believes "AI reads your invoices" from a sentence. Show the paper turning into
+     numbers, with the price rise already flagged. -->
+<section class="soft">
+  <div class="wrap">
+    <div class="eyebrow rv">Watch it work</div>
+    <h2 class="rv rv-1">Photograph the invoice. That is the whole job.</h2>
+    <p class="sub rv rv-2">No typing. No spreadsheet. No "we will get to it Sunday." It reads the paper, updates your
+      costs, moves your stock, posts the journal entry, and flags the thing that just got more expensive.</p>
+
+    <div class="demo rv rv-3">
+      <div class="paper">
+        <div class="scan"></div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px">NORTHGATE PROVISIONS CO.</div>
+        <div style="color:#64748B;margin-bottom:12px">INV 88214 &nbsp;&middot;&nbsp; 07/12/26</div>
+        <div class="ln"><span>BEEF, RIBEYE CHOICE</span><span>14.39 / LB</span></div>
+        <div class="ln"><span>BEEF, NY STRIP CHOICE</span><span>12.99 / LB</span></div>
+        <div class="ln"><span>SEASONING, BLACKENING 4/24OZ</span><span>39.99 / CS</span></div>
+        <div class="ln"><span>TEA, BLACK, BAGS 32-4 OZ</span><span>58.99 / CS</span></div>
+        <div class="ln" style="border:none;font-weight:700;padding-top:8px"><span>TOTAL</span><span>1,284.62</span></div>
+      </div>
+
+      <div class="out">
+        <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:10px">Culvana, 4 seconds later</div>
+        <div class="row"><span>Ribeye, choice</span><span><b>$31.72</b>/kg <span class="pill up">&uarr; 6.1%</span></span></div>
+        <div class="row"><span>NY strip, choice</span><span><b>$28.64</b>/kg <span class="pill ok">flat</span></span></div>
+        <div class="row"><span>Blackened seasoning</span><span><b>$14.69</b>/kg <span class="pill ok">flat</span></span></div>
+        <div class="row"><span>Black tea, bagged</span><span><b>$16.26</b>/kg <span class="pill up">&uarr; 3.4%</span></span></div>
+        <div class="row" style="border:none;padding-top:14px">
+          <span style="font-size:13px;color:var(--danger);font-weight:600">Ribeye is up 6.1%. Your steak frites just went from 28% food cost to 31%.</span>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--mute);margin-top:14px">Illustrative vendor. The pack sizes, the units and the conversions are exactly what the parser returns on a real invoice, because those are the hard part.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS. AI-native means the AI does the WORK, not that there's a chatbot bolted on the side. -->
+<section class="soft" id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2 class="rv">AI-native means the AI does the <span class="grad" style="background:linear-gradient(120deg,var(--brand),#0891B2);-webkit-background-clip:text;background-clip:text">typing</span>.</h2>
+    <p class="sub">
+      Not a chatbot bolted onto a form. The AI reads your invoices, builds your order guide, costs your recipes,
+      drafts your purchase orders and answers your questions, so nobody in your building does data entry.
+    </p>
+    <div class="grid g4">
+      <div class="card lift rv">
+        <div class="ico">1</div>
+        <h3>Photograph the invoice</h3>
+        <p>Culvana reads it. Line items, pack sizes, prices, allergens. It updates your costs and your stock and posts the journal entry.</p>
+      </div>
+      <div class="card lift rv">
+        <div class="ico">2</div>
+        <h3>Your recipes cost themselves</h3>
+        <p>Prices move, margins move, and the menu tells you which dish just stopped making money, before the month closes, not after.</p>
+      </div>
+      <div class="card lift rv">
+        <div class="ico">3</div>
+        <h3>Sell on any screen</h3>
+        <p>Counter, table, handheld, kitchen display, online menu. A browser on a tablet you already own. Every sale depletes the walk-in.</p>
+      </div>
+      <div class="card lift rv">
+        <div class="ico">4</div>
+        <h3>Just ask</h3>
+        <p>"Where am I losing margin?" It answers from your ledger and your invoices, and when it finds nothing, it says so instead of inventing a task.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HARDWARE-FREE / PAPERLESS: the differentiator against the incumbents, stated concretely. -->
+<section>
+  <div class="wrap">
+    <div class="grid g2" style="align-items:center;gap:56px">
+      <div>
+        <div class="eyebrow">No hardware. No paper.</div>
+        <h2 class="rv">Nothing to buy. <span style="color:var(--sage)">Nothing to file.</span></h2>
+        <p style="font-size:17px;color:var(--ink-soft);margin-bottom:20px">
+          The incumbents sell you a $2,000 terminal, a $600 kitchen screen and a printer that jams. Culvana runs in
+          a browser on the tablet in your office and the phone in your server's apron.
+        </p>
+        <p style="font-size:17px;color:var(--ink-soft)">
+          And the paper trail is the software. Order guides, prep lists, counts, POs, invoices, journal entries
+          they don't get printed, filed and lost. They're the system.
+        </p>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table>
+          <thead><tr><th>What it replaces</th><th class="num">Typical</th><th class="num">Culvana</th></tr></thead>
+          <tbody>
+            <tr><td>POS terminal + KDS screen</td><td class="num old">$2,600</td><td class="num new">$0</td></tr>
+            <tr><td>Restaurant management software</td><td class="num old">$330/mo</td><td class="num new">included</td></tr>
+            <tr><td>Inventory / costing tool</td><td class="num old">$150/mo</td><td class="num new">included</td></tr>
+            <tr><td>Online ordering</td><td class="num old">$99/mo</td><td class="num new">included</td></tr>
+            <tr><td>Printers, paper, toner</td><td class="num old">$60/mo</td><td class="num new">$0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--mute);margin-top:16px">
+      Typical figures are what operators tell us they currently pay. Yours will differ, that's what the
+      <a href="savings.html" style="color:var(--brand);font-weight:600">savings calculator</a> is for, and it uses your numbers, not ours.
+    </p>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="soft" id="who">
+  <div class="wrap">
+    <div class="eyebrow">Who it's for</div>
+    <h2 class="rv">Not just restaurants. <span class="grad" style="background:linear-gradient(120deg,var(--brand),#7C3AED);-webkit-background-clip:text;background-clip:text">One platform.</span></h2>
+    <p class="sub rv rv-2">Wherever food gets costed, counted and sold. A deli counter and a cruise galley are the same problem at different scale: what did that plate cost, and did anybody notice when it changed. Same engine, configured for how you actually operate.</p>
+    <div class="grid g3">
+      <div class="card seg lift rv rv-0" style="--g:linear-gradient(135deg,#2670F6,#7C3AED)"><span class="tag">🍽️</span><h3>Full-service restaurants</h3><p>Tables, courses, split checks, tips. Servers on their own phones. The kitchen sees the ticket before the pad hits the rail.</p></div>
+      <div class="card seg lift rv rv-1" style="--g:linear-gradient(135deg,#F59E0B,#EF4444)"><span class="tag">🍔</span><h3>Fast casual and QSR</h3><p>A counter that keeps up at the lunch rush, an AI that upsells, and a kitchen display that does not need a printer.</p></div>
+      <div class="card seg lift rv rv-2" style="--g:linear-gradient(135deg,#EC4899,#8B5CF6)"><span class="tag">🍸</span><h3>Bars and clubs</h3><p>Pour costing that survives free-pouring. Bottles reconciled to sales instead of to hope.</p></div>
+      <div class="card seg lift rv rv-3" style="--g:linear-gradient(135deg,#0891B2,#2670F6)"><span class="tag">🎪</span><h3>Catering</h3><p>Quote from a brief, hold the date, take the deposit. The deposit sits in deferred revenue until the food is actually served.</p></div>
+      <div class="card seg lift rv rv-0" style="--g:linear-gradient(135deg,#059669,#0891B2)"><span class="tag">🏭</span><h3>Commissary and central kitchens</h3><p>Produce once, ship to the stores, and the transfer lands in both sets of books without a spreadsheet.</p></div>
+      <div class="card seg lift rv rv-1" style="--g:linear-gradient(135deg,#6366F1,#2670F6)"><span class="tag">🏢</span><h3>Franchises and multi-unit</h3><p>One recipe pushed to fifty units. One login for every P&amp;L. Royalties off numbers you can audit.</p></div>
+      <div class="card seg lift rv rv-2" style="--g:linear-gradient(135deg,#F97316,#EC4899)"><span class="tag">📦</span><h3>Meal prep and ghost kitchens</h3><p>Subscriptions, batch production, driver tracking, and a menu that publishes itself.</p></div>
+      <div class="card seg lift rv rv-3" style="--g:linear-gradient(135deg,#D97706,#F59E0B)"><span class="tag">🥐</span><h3>Bakeries and cafés</h3><p>Sub-recipes three deep. The mother dough inside the loaf inside the sandwich, costed all the way down.</p></div>
+      <div class="card seg lift rv rv-0" style="--g:linear-gradient(135deg,#0F766E,#059669)"><span class="tag">🏨</span><h3>Hotels and venues</h3><p>Multiple outlets, one commissary, one set of books. Banquets that do not live in a separate system.</p></div>
+      <div class="card seg lift rv" style="--g:linear-gradient(135deg,#16A34A,#65A30D)"><span class="tag">🛒</span><h3>Supermarkets and grocery</h3><p>The deli, the hot bar, the bakery, the in-store kitchen. Every prepared item costed to the gram, every label compliant, and shrink you can actually see instead of writing off at year end.</p></div>
+      <div class="card seg lift rv rv-1" style="--g:linear-gradient(135deg,#0369A1,#0891B2)"><span class="tag">🚢</span><h3>Cruise lines and marine</h3><p>Multiple galleys, thousands of covers, provisioning weeks ahead for a port you have not reached yet. One recipe library across the fleet, one cost per cover, one set of books.</p></div>
+      <div class="card seg lift rv rv-2" style="--g:linear-gradient(135deg,#7C3AED,#DB2777)"><span class="tag">🏟️</span><h3>Stadiums and venues</h3><p>Thirty concession stands, four hours, and a menu that changes with the fixture. Par levels that survive a sell-out and a count that closes the same night.</p></div>
+      <div class="card seg lift rv rv-3" style="--g:linear-gradient(135deg,#B45309,#D97706)"><span class="tag">🎓</span><h3>Schools and universities</h3><p>Cycle menus, allergen declarations that have to be right, nutrition to the federal standard, and a cost per student that somebody audits.</p></div>
+      <div class="card seg lift rv" style="--g:linear-gradient(135deg,#0F766E,#14B8A6)"><span class="tag">🏥</span><h3>Hospitals and senior living</h3><p>Therapeutic diets, texture modification, allergens that are a clinical matter rather than a preference, and a cost per tray that finance watches.</p></div>
+      <div class="card seg lift rv rv-1" style="--g:linear-gradient(135deg,#475569,#334155)"><span class="tag">✈️</span><h3>Airline and rail catering</h3><p>Production at scale against a manifest, costed per cover, built in a central kitchen and shipped to a gate on a clock.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="rv">$55 a location. Or <span class="grad" style="background:linear-gradient(120deg,#059669,#22D3EE);-webkit-background-clip:text;background-clip:text">nothing at all.</span></h2>
+    <p class="sub" style="margin:0 auto 44px">
+      Everything is included, no tiers, no per-seat fees, no feature you have to upgrade to reach. AI is billed
+      as you use it, in dollars, and you can see the meter.
+    </p>
+    <div class="grid g2" style="max-width:760px;margin:0 auto;text-align:left">
+      <div class="card">
+        <h3 style="font-size:15px;color:var(--mute);font-weight:600">Keep your processor</h3>
+        <div style="font-size:44px;font-weight:700;letter-spacing:-.02em;margin:6px 0">$55<span style="font-size:16px;color:var(--mute);font-weight:500">/location/mo</span></div>
+        <p>Everything included. AI billed as used, a typical independent spends about $35 a month on it.</p>
+      </div>
+      <div class="card featured">
+        <h3 style="font-size:15px;color:var(--brand);font-weight:700">Process with Culvana</h3>
+        <div style="font-size:44px;font-weight:700;letter-spacing:-.02em;margin:6px 0;color:var(--sage)">$0<span style="font-size:16px;color:var(--mute);font-weight:500">/location/mo</span></div>
+        <p>2.5% + $0.10 a transaction. Above $20,000 a month in card volume the platform fee goes to zero, the processing pays for the software.</p>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--mute);margin-top:22px">
+      Below $20,000 a month the fee stands. We'd rather tell you where the line is than move it later.
+    </p>
+    <div style="margin-top:32px"><a class="btn btn-p" href="savings.html">Work out what you'd save →</a></div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="soft" id="talk">
+  <div class="wrap" style="max-width:640px">
+    <div class="eyebrow">Talk to us</div>
+    <h2>Tell us about your kitchen.</h2>
+    <p class="sub">We'll call you within a day. No demo theatre, we'll ask what you pay now and show you the difference.</p>
+    <div id="culvana-lead-form"></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="culvana-lockup.svg" alt="Culvana" height="26" style="filter:brightness(0) invert(1);margin-bottom:12px">
+        <p style="font-size:13.5px;max-width:280px">Culinary nirvana for your operation. One platform, no hardware, no paper.</p>
+      </div>
+      <div><h4>Platform</h4><ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#who">Who it's for</a></li>
+        <li><a href="savings.html">Savings calculator</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="#talk">Talk to us</a></li>
+        <li><a href="https://app.culvana.com">Sign in</a></li>
+      </ul></div>
+      <div><h4>Payments</h4><ul>
+        <li>Powered by Elavon</li>
+        <li>A U.S. Bancorp company</li>
+        <li>Member FDIC</li>
+      </ul></div>
+    </div>
+    <div class="base">© Culvana <span id="yr"></span>. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- THE COST OF WAITING.
+     This is the only "urgency" on the site, and it is real: it is their own arithmetic, from the calculator they
+     just used. No countdown timer, no "6 people are viewing this", no invented scarcity. A restaurant owner who
+     catches one fake urgency badge stops believing the savings number too, and the savings number is the only
+     one that has to survive. -->
+<div class="waiting" id="wait">
+  <span>Every month you wait costs you <b id="waitAmt">$792</b>. That is <b id="waitYr">$9,504</b> a year.</span>
+  <a class="btn btn-p" href="#talk" style="padding:9px 18px;font-size:14px">Book a demo</a>
+  <button class="x" id="waitX" aria-label="Dismiss">&times;</button>
+</div>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* Scroll reveal. */
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+/* Count the stats up, once, when they come into view. A number that animates is a number people read. */
+function countUp(el){
+  var to = parseFloat(el.dataset.to) || 0;
+  var pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+  var t0 = null, dur = 1100;
+  function step(ts){
+    if (!t0) t0 = ts;
+    var k = Math.min(1, (ts - t0) / dur);
+    var eased = 1 - Math.pow(1 - k, 3);
+    el.textContent = pre + Math.round(to * eased).toLocaleString('en-US') + suf;
+    if (k < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var so = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if (e.isIntersecting) { countUp(e.target); so.unobserve(e.target); } });
+}, { threshold: .5 });
+document.querySelectorAll('.stat[data-to]').forEach(function(el){ so.observe(el); });
+
+/* The waiting bar. It shows THEIR number if they have used the calculator, and a conservative default if they
+   have not. It appears once they are past the fold, and it stays dismissed if they dismiss it. */
+(function(){
+  var bar = document.getElementById('wait');
+  var dismissed = false;
+  try { dismissed = localStorage.getItem('cv-wait') === 'off'; } catch(e){}
+  if (dismissed) return;
+
+  var saved = 0;
+  try { saved = parseFloat(localStorage.getItem('cv-save') || '0'); } catch(e){}
+  if (saved > 0) {
+    document.getElementById('waitAmt').textContent = '$' + Math.round(saved).toLocaleString('en-US');
+    document.getElementById('waitYr').textContent  = '$' + Math.round(saved * 12).toLocaleString('en-US');
+  }
+
+  window.addEventListener('scroll', function(){
+    if (window.scrollY > 600) bar.classList.add('up');
+    else bar.classList.remove('up');
+  }, { passive: true });
+
+  document.getElementById('waitX').addEventListener('click', function(){
+    bar.classList.remove('up');
+    try { localStorage.setItem('cv-wait', 'off'); } catch(e){}
+  });
+})();
+</script>
+<!-- The lead form is served by the app so it's always the current one, a pasted form silently stops
+     collecting the day we add a field. -->
+<!--
+  THE FORM IS GENERATED BY THIS SCRIPT. The <div id="culvana-lead-form"> above is an empty mount, the script
+  builds the fields, wires the submit, and posts to /v1/leads. If the script 404s you get an empty div and no
+  error, which is exactly how a broken lead form goes unnoticed for a month.
+
+  LOCAL TESTING: point data-api at the API you are actually running.
+    <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script>
+
+  PRODUCTION: once app.culvana.com is live, switch back to the line below.
+-->
+<!-- <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script> -->
+<script src="https://app.culvana.com/embed/lead-form.js" data-mount="culvana-lead-form" data-api="https://app.culvana.com"></script>
+
+<script>
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+  /* Follow the OS unless they have made a choice. Once they have, respect it: overriding a person's explicit
+     click because their laptop went dark at sunset is the software deciding it knows better. */
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
+      var chosen = null;
+      try { chosen = localStorage.getItem('cv-theme'); } catch(err){}
+      if (chosen) return;
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      paint();
+    });
+  }
+})();
+</script>
+<script>
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '\u2715' : '\u2630';
+  });
+  /* Close on navigate. A menu that stays open over the section you just jumped to is a menu that
+     hides the thing you asked to see. */
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='\u2630'; });
+  });
+})();
+</script>
+</body>
+</html>

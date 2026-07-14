@@ -1,0 +1,281 @@
+/* Culvana , the marketing site.
+   No framework, no build step. It's a marketing site; it should load in under a second on a phone in a
+   restaurant's back office with two bars of signal. Every dependency is a tax on that. */
+/* LIGHT AND DARK.
+   Every colour on this site is a variable, so the theme is one attribute on <html> rather than a second
+   stylesheet that drifts out of sync with the first. The brand blue does not change: a logo that shifts hue
+   between themes is a logo nobody trusts. */
+:root{
+  --brand:#2670F6; --brand-dark:#1D4ED8;
+  --ink:#0B1220; --ink-soft:#334155; --mute:#64748B;
+  --line:#E2E8F0; --bg:#fff; --bg-soft:#F6F8FC; --card:#fff;
+  --navy:#070C18; --navy-ink:#fff; --navy-mute:#94A3B8;
+  --sage:#059669; --amber:#B45309; --danger:#B91C1C;
+  --nav-bg:rgba(255,255,255,.92);
+  --logo-filter:none;
+  --r:14px;
+}
+html[data-theme="dark"]{
+  --ink:#E8EDF5; --ink-soft:#B4C0D4; --mute:#7C8BA1;
+  --line:#1E2A3D; --bg:#080D16; --bg-soft:#0D1420; --card:#0F1725;
+  /* In dark mode the "navy" panels have to be DIFFERENT from the page, or the hero and the footer dissolve
+     into the background and the page loses all structure. Lift them, do not darken them. */
+  --navy:#111B2D; --navy-ink:#F1F5F9; --navy-mute:#94A3B8;
+  --sage:#34D399; --amber:#FBBF24; --danger:#F87171;
+  --nav-bg:rgba(8,13,22,.88);
+  /* The lockup is a dark-ink wordmark. On a dark page it must be inverted or it disappears. */
+  --logo-filter:brightness(0) invert(1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1430px;margin:0 auto;padding:0 24px}
+.btn{display:inline-block;padding:13px 22px;border-radius:10px;font-weight:600;font-size:15px;border:none;cursor:pointer;transition:.15s}
+.btn-p{background:var(--brand);color:#fff}
+.btn-p:hover{background:var(--brand-dark)}
+.btn-g{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.22)}
+.btn-o{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+
+nav{position:sticky;top:0;z-index:50;background:var(--nav-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+nav .links{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--ink-soft)}
+nav .links a:hover{color:var(--brand)}
+
+.hero{background:var(--navy);color:var(--navy-ink);padding:88px 0 96px;position:relative;overflow:hidden}
+.hero:after{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(38,112,246,.28),transparent 65%)}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-size:56px;line-height:1.08;letter-spacing:-.03em;font-weight:700;max-width:760px;margin:16px 0 20px}
+.hero p.lead{font-size:19px;color:#94A3B8;max-width:620px;margin-bottom:32px;line-height:1.65}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+
+.strip{background:var(--bg-soft);color:var(--mute);border-bottom:1px solid var(--line);padding:18px 0;font-size:13.5px;border-top:1px solid rgba(255,255,255,.06)}
+.strip .wrap{display:flex;gap:32px;flex-wrap:wrap;justify-content:center}
+.strip b{color:var(--ink)}
+
+section{padding:88px 0}
+section.soft{background:var(--bg-soft)}
+h2{font-size:38px;line-height:1.18;letter-spacing:-.02em;font-weight:700;margin-bottom:14px}
+.sub{font-size:17px;color:var(--mute);max-width:640px;line-height:1.65;margin-bottom:44px}
+
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.card h3{font-size:18px;font-weight:700;margin-bottom:7px}
+.card p{font-size:14.5px;color:var(--ink-soft);line-height:1.65}
+.card .ico{width:40px;height:40px;border-radius:10px;background:rgba(38,112,246,.10);color:var(--brand);
+  display:grid;place-items:center;font-size:19px;margin-bottom:14px}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);font-weight:700}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.old{color:#B91C1C} .new{color:var(--sage);font-weight:600}
+
+footer{background:var(--navy);color:var(--navy-mute);padding:56px 0 32px;font-size:14px}
+footer a:hover{color:var(--navy-ink)}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+footer h4{color:var(--navy-ink);font-size:13px;margin-bottom:12px;font-weight:700}
+footer li{list-style:none;margin-bottom:7px}
+footer .base{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;font-size:12.5px;color:#475569}
+
+@media(max-width:860px){
+  .hero h1{font-size:36px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  footer .cols{grid-template-columns:1fr 1fr}
+  nav .links{display:none}
+  h2{font-size:28px}
+}
+
+
+/* The toggle. A button, not a switch: two states, one word of meaning, no ambiguity about which way is on. */
+.theme-btn{background:none;border:1px solid var(--line);border-radius:9px;width:36px;height:36px;
+  cursor:pointer;color:var(--ink-soft);font-size:15px;display:grid;place-items:center;transition:.15s}
+.theme-btn:hover{border-color:var(--brand);color:var(--brand)}
+.logo-img{filter:var(--logo-filter)}
+
+/* The booking widget */
+.book{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card);min-height:680px}
+.book iframe{width:100%;height:680px;border:none;display:block}
+.tabs{display:flex;gap:6px;margin-bottom:20px}
+.tab{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+  font-size:14px;font-weight:600;cursor:pointer}
+.tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+
+/* The featured pricing card.
+   It was an inline 3% blue tint, which is invisible in light mode and actively wrong in dark. A "highlighted"
+   card has to be legible FIRST and highlighted second. So: a real tinted panel, a real border, and text colours
+   that are declared rather than inherited from whatever happens to be behind them. */
+.featured{
+  border:2px solid var(--brand);
+  background:var(--featured-bg);
+}
+.featured h3{color:var(--brand)}
+.featured p{color:var(--ink-soft)}
+:root{ --featured-bg:#F2F6FF; }
+html[data-theme="dark"]{ --featured-bg:#101C33; }
+
+/* ============================================================================================
+   MAKE IT MOVE.
+   A restaurant owner scrolling on their phone at 11pm decides in about four seconds. Static
+   boxes of text lose that fight. Everything below is CSS and one small script: no library, no
+   3MB of animation runtime, because a marketing site that takes six seconds to load on a
+   back-office wifi is a marketing site nobody reads.
+   ============================================================================================ */
+
+/* Animated mesh behind the hero. Cheap: two blurred radial blobs on a slow loop. */
+.hero{position:relative;isolation:isolate}
+.hero .mesh{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.hero .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:drift 22s ease-in-out infinite}
+.hero .b1{width:620px;height:620px;background:#2670F6;top:-220px;right:-120px}
+.hero .b2{width:520px;height:520px;background:#0891B2;bottom:-240px;left:-100px;animation-delay:-8s}
+.hero .b3{width:400px;height:400px;background:#7C3AED;top:30%;left:35%;opacity:.28;animation-delay:-15s}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(60px,-40px) scale(1.12)}
+  66%{transform:translate(-40px,50px) scale(.94)}
+}
+
+/* Scroll reveal. Nothing exotic: fade and lift as it enters the viewport. */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv-1{transition-delay:.08s}.rv-2{transition-delay:.16s}.rv-3{transition-delay:.24s}.rv-4{transition-delay:.32s}
+
+/* Cards that respond to a cursor. */
+.card{transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,border-color .25s}
+.card.lift:hover{transform:translateY(-5px);border-color:var(--brand);
+  box-shadow:0 18px 40px -18px rgba(38,112,246,.35)}
+
+/* Big numbers that count up. */
+.stat{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;
+  background:linear-gradient(135deg,var(--brand),#22D3EE);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* THE COST OF WAITING. Sticky, always visible, always their own number. */
+.waiting{position:fixed;bottom:0;left:0;right:0;z-index:60;background:var(--navy);color:#fff;
+  padding:12px 24px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  border-top:2px solid var(--brand);transform:translateY(110%);transition:transform .5s cubic-bezier(.16,1,.3,1);
+  font-size:14.5px}
+.waiting.up{transform:none}
+.waiting b{color:#FBBF24;font-size:17px}
+.waiting .x{background:none;border:none;color:#64748B;cursor:pointer;font-size:18px;padding:0 4px}
+
+/* The invoice demo. Watch a photo become data. */
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.paper{background:#fff;border-radius:12px;padding:22px;font-family:ui-monospace,monospace;font-size:11.5px;
+  color:#1E293B;box-shadow:0 24px 60px -24px rgba(0,0,0,.45);transform:rotate(-1.2deg);position:relative;overflow:hidden}
+.paper .scan{position:absolute;left:0;right:0;height:70px;
+  background:linear-gradient(180deg,transparent,rgba(38,112,246,.28),transparent);animation:scan 3.4s ease-in-out infinite}
+@keyframes scan{0%{top:-70px}100%{top:100%}}
+.paper .ln{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #E2E8F0}
+.out{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.out .row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);
+  opacity:0;transform:translateX(-10px);animation:pop .5s forwards}
+.out .row:nth-child(2){animation-delay:.5s}.out .row:nth-child(3){animation-delay:.9s}
+.out .row:nth-child(4){animation-delay:1.3s}.out .row:nth-child(5){animation-delay:1.7s}
+.out .row:nth-child(6){animation-delay:2.1s}
+@keyframes pop{to{opacity:1;transform:none}}
+.pill{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill.up{background:rgba(220,38,38,.12);color:var(--danger)}
+.pill.ok{background:rgba(5,150,105,.12);color:var(--sage)}
+
+/* Segment cards with a gradient wash. */
+.seg{position:relative;overflow:hidden}
+.seg:before{content:'';position:absolute;inset:0;opacity:.07;background:var(--g);transition:opacity .25s}
+.seg:hover:before{opacity:.14}
+.seg > *{position:relative}
+.seg .tag{font-size:26px;margin-bottom:10px;display:block}
+
+/* Headline with a gradient word. */
+.grad{background:linear-gradient(120deg,#60A5FA,#22D3EE 55%,#A78BFA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+@media(max-width:860px){ .demo{grid-template-columns:1fr} .stat{font-size:34px} }
+@media(prefers-reduced-motion:reduce){
+  /* Somebody who asked their OS to stop animations meant it. */
+  .blob,.paper .scan,.out .row{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  .out .row{opacity:1;transform:none}
+}
+
+/* ============================================================================================
+   ACCESSIBILITY AND MOBILE. The unglamorous half of "best practice", and the half that decides
+   whether half your visitors can use the site at all.
+   ============================================================================================ */
+
+/* Skip link. Hidden until focused, then unmissable. Somebody on a keyboard should not have to
+   tab through nine nav items to reach the page. */
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--brand);color:#fff;
+  padding:12px 18px;border-radius:0 0 8px 0;font-weight:600}
+.skip:focus{left:0}
+
+/* VISIBLE FOCUS. Browsers give you this for free and designers keep removing it. A keyboard user
+   with no focus ring is a person clicking blindfolded. */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+
+/* THE MOBILE NAV. This was a real bug: the links were display:none below 860px with nothing to
+   replace them. On a phone the site had no navigation at all, and most restaurant owners will open
+   this on a phone. */
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:9px;width:38px;height:38px;
+  cursor:pointer;color:var(--ink);font-size:17px;align-items:center;justify-content:center}
+@media(max-width:860px){
+  .burger{display:flex}
+  nav .links{display:none;position:absolute;top:66px;left:0;right:0;background:var(--bg);
+    border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 0}
+  nav .links.open{display:flex}
+  nav .links a{padding:13px 24px;font-size:16px;border-bottom:1px solid var(--line)}
+  nav .links a:last-child{border:none}
+  /* The sticky "cost of waiting" bar plus a fixed nav on a small phone leaves almost no page.
+     Give it room. */
+  .waiting{font-size:13px;padding:10px 14px;gap:10px}
+  body{padding-bottom:0}
+}
+
+/* Reduced motion is already respected above. Reduced transparency matters too: the blurred blobs
+   behind the hero are decoration, and decoration should never be the reason someone cannot read a
+   headline. */
+@media(prefers-reduced-transparency:reduce){ .hero .blob{display:none} }
+
+/* The segment cards declare their own text colours rather than inheriting.
+   One of them was rendering its body copy in blue and the cause was not obvious from the markup, which is
+   exactly the situation where you stop investigating and start being explicit. A card whose legibility depends
+   on what happens to be above it in the cascade is a card that will break again. */
+.seg h3{color:var(--ink)}
+.seg p{color:var(--ink-soft)}
+.seg .tag{filter:none}
+
+
+/* ============================================================================================
+   THE CALCULATOR PANEL. NOTHING IN IT WRAPS.
+
+   At 50,000 locations the totals column carries "-$55,673,810" and the label column was breaking
+   "Processing rate" across two lines. On a page whose entire job is to be believed about money, a
+   number that looks broken is a number that is not trusted, and a table that cannot hold its own
+   output at the top of its own input range is a table that was never tested at the top of its own
+   input range.
+
+   So: more room, and every cell explicitly refuses to break. The one thing allowed to wrap is the
+   small grey sub-line under a label, which is where the wrapping belongs.
+   ============================================================================================ */
+.calc{ grid-template-columns:1fr 1.4fr; gap:34px; }
+.result{ padding:30px 32px; }
+.result table{ font-size:14px; table-layout:auto; }
+.result th, .result td{ padding:12px 0; white-space:nowrap; }
+.result td.num, .result th.num{ padding-left:22px; }
+.result .big{ font-size:56px; }
+
+/* Only the small explanatory sub-line under a row label may wrap. */
+.result td div{ white-space:normal; }
+
+/* Very large numbers get a slightly tighter face rather than a smaller one, so the columns stay
+   readable at 50,000 sites without shrinking the type for the 1-site operator who is the real buyer. */
+.result td.num, .result th.num, .result .big{ font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+
+@media(max-width:1180px){
+  .calc{ grid-template-columns:1fr; }
+  .result{ position:static; padding:24px; }
+  .result .big{ font-size:44px; }
+  .result table{ font-size:13px; }
+  .result td.num, .result th.num{ padding-left:12px; }
+}

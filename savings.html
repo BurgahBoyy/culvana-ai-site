@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What you'd save with Culvana, work it out with your own numbers</title>
+<meta name="description" content="Put in what you actually pay today. We'll show you the difference, itemised, with the assumptions on screen.">
+<link rel="icon" href="culvana-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+<script>
+/* THEME. Set before first paint, from an inline script in <head>, so a dark-mode visitor never gets a white
+   flash. Doing this in a deferred script is the single most common way a dark theme feels broken. */
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = saved || (sysDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<style>
+  .calc{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .field input.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit}
+  .field .hint{font-size:11.5px;color:var(--mute);margin-top:4px;line-height:1.5}
+  .result{background:var(--navy);color:#fff;border-radius:var(--r);padding:28px;position:sticky;top:86px}
+  .big{font-size:52px;font-weight:700;letter-spacing:-.03em;line-height:1;margin:6px 0}
+  .result table{color:#CBD5E1}
+  .result th.result td{border-bottom:1px solid rgba(255,255,255,.09);padding:11px 0}
+  .result th{color:#64748B}
+  .result td.num{color:#fff}
+  .save{color:#34D399;font-weight:700}
+  .cost{color:#F87171}
+  @media(max-width:860px){.calc{grid-template-columns:1fr}.result{position:static}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html"><img src="culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#who">Who it's for</a>
+      <a href="savings.html" style="color:var(--brand);font-weight:600">What you'll save</a>
+      <a href="index.html#pricing">Pricing</a>
+    </div>
+    <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+    <a class="btn btn-p" href="index.html#talk">Book a demo</a>
+  </div>
+</nav>
+
+<main id="main">
+<section style="padding-bottom:40px">
+  <div class="wrap">
+    <div class="eyebrow">The savings calculator</div>
+    <h2>Use your numbers. Not ours.</h2>
+    <p class="sub">
+      Every restaurant software company shows you a savings figure built from an average they invented. This one
+      is built from what <em>you</em> pay. Change any input and watch it move, and every assumption we make is
+      printed on the screen, so you can argue with it.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+<div class="wrap">
+<div class="calc">
+
+  <div>
+    <div class="card">
+      <h3 style="margin-bottom:18px">Your operation</h3>
+
+      <div class="field">
+        <label>What kind of place is it?</label>
+        <select id="kind">
+          <option value="fsr">Full-service restaurant</option>
+          <option value="qsr">Fast casual / QSR</option>
+          <option value="bar">Bar or club</option>
+          <option value="cafe">Café or bakery</option>
+          <option value="catering">Catering</option>
+          <option value="ghost">Meal prep / ghost kitchen</option>
+          <option value="multi">Multi-unit or franchise</option>
+          <option value="commissary">Commissary / central kitchen</option>
+        </select>
+        <div class="hint" id="kindHint">Tables, courses, tips. The hardware bill is usually the biggest surprise here.</div>
+      </div>
+
+      <div class="field"><label>Locations</label><input id="locs" type="number" min="1" value="1"></div>
+
+      <div class="field">
+        <label>Monthly card volume, per location</label>
+        <input id="vol" type="number" min="0" step="500" value="60000">
+        <div class="hint">The number on your merchant statement. It's the single biggest lever here, above $20,000 your platform fee goes to zero.</div>
+      </div>
+
+      <div class="field">
+        <label>What you pay your processor now</label>
+        <input id="rate" type="number" min="0" step="0.05" value="3.25">
+        <div class="hint">Effective rate, as a %. Take last month's total fees ÷ total card volume × 100. Most operators are between 2.9% and 3.6% once everything is in.</div>
+      </div>
+
+      <div class="field">
+        <label>Per-transaction fee you pay now (cents)</label>
+        <input id="pertxn" type="number" min="0" step="0.01" value="0.15">
+        <div class="hint">The flat fee on every swipe, on top of the percentage. Most operators pay 15 to 20 cents. Culvana charges 10. It looks small and it is not: it is charged on every single transaction.</div>
+      </div>
+
+      <div class="field">
+        <label>Average ticket ($)</label>
+        <input id="ticket" type="number" min="1" step="1" value="28">
+        <div class="hint">Card volume divided by the flat fee decides how many transactions you run, and that is what the per-swipe fee is charged on. A coffee shop and a steakhouse doing the same volume pay wildly different flat fees.</div>
+      </div>
+
+      <div class="field">
+        <label>Restaurant software you pay for today ($/mo, per location)</label>
+        <input id="sw" type="number" min="0" step="10" value="330">
+        <div class="hint">Inventory, costing, back-office. Add up every subscription, most people forget two.</div>
+      </div>
+
+      <div class="field">
+        <label>POS software fee ($/mo, per location)</label>
+        <input id="pos" type="number" min="0" step="10" value="79">
+      </div>
+
+      <div class="field">
+        <label>Vendor invoices a month, per location</label>
+        <input id="inv" type="number" min="0" value="80">
+        <div class="hint">Culvana reads them. Somebody in your building is typing them in right now.</div>
+      </div>
+
+      <div class="field">
+        <label>Hours a month counting, ordering and reporting (per location)</label>
+        <input id="ops" type="number" min="0" step="1" value="28">
+        <div class="hint">Weekly stock counts, building orders off par levels, pulling numbers together at month end. Culvana does not delete this work, it does most of it. We assume 70% and leave the rest as a human checking.</div>
+      </div>
+
+      <div class="field">
+        <label>Food and beverage purchases a month, per location ($)</label>
+        <input id="purch" type="number" min="0" step="500" value="24000">
+        <div class="hint">Your total food spend. This is the number the whole product exists to protect.</div>
+      </div>
+
+      <div class="field">
+        <label>Margin you think Culvana recovers (%)</label>
+        <input id="recover" type="number" min="0" max="10" step="0.1" value="1.5">
+        <div class="hint">Price creep caught the day it lands, portions costed, dishes repriced before the month closes. We default to a deliberately cautious 1.5%. <b>Set it to 0 if you do not believe us.</b> Everything above still stands on its own.</div>
+      </div>
+
+      <div class="field">
+        <label>What that person costs you, per hour</label>
+        <input id="wage" type="number" min="0" step="1" value="22">
+        <div class="hint">Manager or bookkeeper rate, loaded. We assume 4 minutes per invoice, typed by hand, that's conservative.</div>
+      </div>
+
+      <div class="field">
+        <label>Paper, printers, toner, filing ($/mo)</label>
+        <input id="paper" type="number" min="0" step="5" value="60">
+      </div>
+    </div>
+  </div>
+
+  <div class="result" id="out"></div>
+</div>
+
+<!-- THE ASSUMPTIONS, ON THE PAGE. A savings calculator that hides its assumptions is a sales tool pretending
+     to be a spreadsheet. If ours are wrong, we would rather you tell us. -->
+<div class="card" style="margin-top:28px;background:var(--bg-soft)">
+  <h3>What we're assuming, argue with it</h3>
+  <p style="margin-top:8px">
+    <b>Processing:</b> Culvana bills 2.5% + $0.10 a transaction. We do not guess your transaction count, we work
+    it out from the average ticket you entered, because the flat fee is charged per swipe and a cafe doing $60,000
+    in $6 coffees pays it ten times more often than a steakhouse doing $60,000 in $90 dinners. Most operators pay
+    15 to 20 cents a swipe today. We charge 10. On the numbers above that alone is a real line, and we show it
+    separately rather than burying it inside one "processing" figure.<br><br>
+    <b>Platform fee:</b> $55 per location per month, waived entirely above $20,000 of monthly card volume per
+    location. Below that it stands, we'd rather show you the line than move it later.<br><br>
+    <b>AI usage:</b> billed as you go, roughly $0.30 per invoice read plus a few dollars of questions. We've
+    estimated it from your invoice count and we <em>charge</em> for it, it isn't free, and a calculator that
+    pretended otherwise would be lying to you on the first page.<br><br>
+    <b>Labour:</b> 4 minutes to key one invoice by hand, at the wage you entered. If your bookkeeper is faster
+    than that, lower it. We didn't count the time spent chasing a price change nobody noticed, because we can't
+    measure it, but you know it's real.<br><br>
+    <b>Hardware:</b> not in the monthly figure at all. It shows separately, as a one-off you don't spend.<br><br>
+    <b>The work:</b> we assume Culvana automates 70% of the hours you spend counting stock, building orders off
+    par levels and pulling numbers together at month end. Not 100%: a human still checks a count and approves an
+    order, and any vendor telling you otherwise has never worked a walk-in. Multi-site adds two hours a month per
+    extra location for consolidating P&Ls, which is a cost that does not exist at one site and is invisible on
+    every competitor's calculator.<br><br>
+    <b>The margin:</b> the only estimate here we cannot prove in advance, and the one the whole product is for.
+    A vendor raises a price 4%, nobody notices for three weeks, and you sell two thousand plates at the old menu
+    price. We default to recovering 1.5% of purchases, which is deliberately cautious. <b>Set it to zero.</b> The
+    bills alone still pay for us several times over, and we would rather you buy on the number you can verify.
+  </p>
+</div>
+
+</div>
+</section>
+
+<!-- THE FORM GOES HERE, not on some other page.
+     This is the highest-intent moment on the entire site: they have just watched a number come out of their own
+     inputs. Sending them back to the home page to convert is throwing the lead away, and the volume figure they
+     typed in above is the exact number the sales call needs, so we carry it into the form rather than making
+     them say it twice. -->
+<section class="soft" id="talk">
+  <div class="wrap" style="max-width:640px">
+    <div class="eyebrow">Talk to us</div>
+    <h2 id="talkHead">Let's go through your actual statement.</h2>
+    <p class="sub" id="talkSub">
+      We'll call within a day. Bring last month's merchant statement and we'll check the number above against
+      what you're really paying, that's the whole meeting. No demo theatre.
+    </p>
+    <div id="culvana-lead-form"></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="base" style="border:none;padding-top:0">© Culvana <span id="yr"></span>. Payments powered by Elavon, a U.S. Bancorp company · Member FDIC.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+var HINTS = {
+  fsr:'Tables, courses, tips. The hardware bill is usually the biggest surprise here.',
+  qsr:'Volume is high and tickets are small, so the per-transaction fee matters more than the percentage.',
+  bar:'Pour cost is where the money leaks. Card volume is usually higher than owners guess.',
+  cafe:'Small tickets, lots of them. The $0.10 per transaction is the number to watch.',
+  catering:'Deposits, events, big invoices. Fewer transactions, much larger ones, processing % dominates.',
+  ghost:'Subscriptions and batch production. Invoice count is usually high, so the AI reading them is worth most here.',
+  multi:'Everything below multiplies by location. So does the software you\'re replacing.',
+  commissary:'You buy for everyone. Invoice volume is your biggest cost of admin, and it\'s the thing AI removes.'
+};
+var kind = document.getElementById('kind');
+kind.addEventListener('change', function(){ document.getElementById('kindHint').textContent = HINTS[kind.value]; });
+
+var usd = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
+var v = function(id){ return parseFloat(document.getElementById(id).value) || 0; };
+
+function calc(){
+  var locs = Math.max(1, v('locs'));
+  var vol  = v('vol');           // per location
+  var rate = v('rate') / 100;
+  var pertxn = v('pertxn');      // their flat fee per swipe
+  var ticket = Math.max(1, v('ticket'));
+  var sw   = v('sw'), pos = v('pos'), inv = v('inv'), wage = v('wage'), paper = v('paper');
+
+  // THE TRANSACTION COUNT. This is the number the flat fee is charged on, and it is why a cafe and a steakhouse
+  // doing identical volume pay wildly different processing bills. Asking for the average ticket instead of
+  // assuming one is the difference between a real calculation and a plausible one.
+  var txns = vol > 0 ? vol / ticket : 0;
+
+  // ---- what they pay today, per location, per month
+  var payNowProc  = vol * rate + txns * pertxn;
+  var payNowSoft  = sw + pos;
+  var payNowLabor = inv * (4/60) * wage;      // 4 minutes an invoice, by hand
+  var payNowPaper = paper;
+  var payNowTotal = payNowProc + payNowSoft + payNowLabor + payNowPaper;
+
+  // ---- what they'd pay us
+  var culvProc = vol * 0.025 + txns * 0.10;   // 2.5% + 10c, on the SAME transaction count
+  var waived   = vol >= 20000;
+  var culvPlat = waived ? 0 : 55;
+  var culvAi   = inv * 0.30 + 6;              // invoices read + a few questions
+  var culvTotal = culvProc + culvPlat + culvAi;
+
+  var savePer = payNowTotal - culvTotal;      // THE BILLS. Certain.
+  var saveAll = savePer * locs;
+
+  var hardware = 2600 * locs;                 // terminal + KDS you don't buy
+
+  /* ---------------------------------------------------------------------------------------------
+     THE TWO THINGS THIS CALCULATOR WAS MISSING, AND BOTH ARE BIGGER THAN THE BILLS.
+
+     1. THE WORK. The page priced somebody typing invoices and nothing else. But the invoice is the
+        SMALL job. The big ones are counting stock every week, building orders off par levels by
+        hand, and pulling numbers together at month end. That is what AI-native automation actually
+        removes, and none of it was on the page.
+
+     2. THE MARGIN. This is the entire point of the product and it was completely absent. Culvana
+        exists to catch the 4% price rise the day it lands instead of in the P&L three weeks later.
+        On $24,000 of purchases, 1.5% is $360 a month. At twenty sites it is $7,200, which is a
+        third of the whole saving, and it was nowhere on the screen.
+
+     Both are ESTIMATES, so they live in their own block, below the certain money, and they can be
+     set to zero. A buyer has to be able to throw all of it away and still like the number.
+     --------------------------------------------------------------------------------------------- */
+  var ops     = v('ops');
+  var recover = v('recover') / 100;
+  var purch   = v('purch');
+
+  var AUTOMATED = 0.70;                       // most of it, not all. A human still checks a count.
+  var opsHours  = ops * AUTOMATED * locs;
+
+  /* A multi-site tax that does not exist at one site: somebody consolidates twenty P&Ls into one.
+     It grows with sites, not with covers, and no competitor's calculator has ever shown it. */
+  var consolidationHours = 2 * Math.max(0, locs - 1);
+
+  var labourSaved = (opsHours + consolidationHours) * wage;
+  var marginSaved = purch * recover * locs;
+  var softSaved   = labourSaved + marginSaved;
+  var trueSaved   = saveAll + softSaved;
+
+  var rows = [
+    ['Processing rate',                            vol * rate,     vol * 0.025],
+    ['Per-swipe fee<div style="font-size:11px;color:#64748B;font-weight:400">'
+      + Math.round(txns).toLocaleString('en-US') + ' transactions a month</div>', txns * pertxn, txns * 0.10],
+    ['Software + POS fees',                        payNowSoft,     culvPlat],
+    ['AI (invoices, answers)',                     0,              culvAi],
+    ['Typing invoices in',                         payNowLabor,    0],
+    ['Paper, printing, filing',                    payNowPaper,    0]
+  ];
+
+  var html = ''
+    + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;font-weight:700">You would save</div>'
+    + '<div class="big ' + (trueSaved >= 0 ? 'save' : 'cost') + '">' + usd(Math.abs(trueSaved)) + '<span style="font-size:17px;color:#64748B;font-weight:500">/month</span></div>'
+    + '<div style="color:#94A3B8;font-size:14px;margin-bottom:10px">'
+      + (trueSaved >= 0
+          ? usd(trueSaved * 12) + ' a year across ' + locs + ' location' + (locs>1?'s':'')
+          : 'Culvana would cost you more. We would rather show you that than hide it.')
+    + '</div>'
+    /* THE SPLIT. A buyer has to be able to throw away everything we estimated and still like the number.
+       So the certain money and the estimated money are never added together without being shown apart. */
+    + '<div style="display:flex;gap:10px;margin-bottom:16px;font-size:12.5px">'
+      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:rgba(52,211,153,.12)">'
+        + '<div style="color:#34D399;font-weight:700;font-size:15px">' + usd(saveAll) + '</div>'
+        + '<div style="color:#94A3B8">bills you stop paying</div></div>'
+      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:rgba(148,163,184,.10)">'
+        + '<div style="color:#CBD5E1;font-weight:700;font-size:15px">' + usd(softSaved) + '</div>'
+        + '<div style="color:#64748B">work and margin, estimated</div></div>'
+    + '</div>'
+    + (waived
+        ? '<div style="font-size:12.5px;color:#34D399;margin-bottom:16px">Your platform fee is $0, you clear the $20,000 floor.</div>'
+        : '<div style="font-size:12.5px;color:#FBBF24;margin-bottom:16px">Below $20,000/mo of card volume, so the $55 platform fee applies.</div>')
+    + '<table><thead><tr>'
+      + '<th></th>'
+      + '<th class="num" style="text-align:right;color:#64748B">Now' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
+      + '<th class="num" style="text-align:right;color:#64748B">Culvana' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
+      /* AT SCALE, THE READER NEEDS THREE THINGS AND WE WERE GIVING THEM ONE.
+         What they pay now across the estate, WHAT THEY WOULD PAY US across the estate, and the difference. The
+         middle one was missing entirely: the table showed a $3,000 saving on a line and never once said "your
+         AI bill would be $3,000 a month". A buyer does not sign a saving. They sign an invoice. */
+      + (locs > 1
+          ? '<th class="num" style="text-align:right;color:#64748B">Now<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
+            + '<th class="num" style="text-align:right;color:#93C5FD">Culvana<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
+            + '<th class="num" style="text-align:right;color:#34D399">You save</th>'
+          : '')
+      + '</tr></thead><tbody>';
+
+  rows.forEach(function(r){
+    var nowAll  = r[1] * locs;
+    var culvAll = r[2] * locs;                   // WHAT THEY WOULD ACTUALLY PAY US. The number they sign.
+    var delta   = culvAll - nowAll;              // negative = saving, positive = it costs more
+    html += '<tr><td>' + r[0] + '</td>'
+          + '<td class="num" style="text-align:right">' + (r[1] > 0 ? usd(r[1]) : '\u2014') + '</td>'
+          + '<td class="num" style="text-align:right;color:' + (r[2] < r[1] ? '#34D399' : '#fff') + '">' + (r[2] > 0 ? usd(r[2]) : '\u2014') + '</td>'
+          + (locs > 1
+              ? '<td class="num" style="text-align:right;color:#94A3B8">' + (nowAll > 0 ? usd(nowAll) : '\u2014') + '</td>'
+                + '<td class="num" style="text-align:right;font-weight:600;color:#fff">' + (culvAll > 0 ? usd(culvAll) : '\u2014') + '</td>'
+                + '<td class="num" style="text-align:right;font-weight:700;color:' + (delta < 0 ? '#34D399' : delta > 0 ? '#F87171' : '#64748B') + '">'
+                  + (delta === 0 ? '\u2014' : (delta < 0 ? '\u2212' : '+') + usd(Math.abs(delta)))
+                + '</td>'
+              : '')
+          + '</tr>';
+  });
+
+  html += '<tr style="font-weight:700"><td style="color:#fff">Total</td>'
+        + '<td class="num" style="text-align:right;color:#fff">' + usd(payNowTotal) + '</td>'
+        + '<td class="num" style="text-align:right;color:#34D399">' + usd(culvTotal) + '</td>'
+        + (locs > 1
+            ? '<td class="num" style="text-align:right;color:#94A3B8">' + usd(payNowTotal * locs) + '</td>'
+              + '<td class="num" style="text-align:right;color:#fff;font-weight:800">' + usd(culvTotal * locs) + '</td>'
+              + '<td class="num" style="text-align:right;color:#34D399;font-weight:800">\u2212' + usd(saveAll) + '</td>'
+            : '')
+        + '</tr>';
+
+  /* MIXED UNITS ARE A LIE THAT NOBODY MEANT TO TELL.
+     The table is per-location. The hardware figure underneath was a total. Put a multi-site operator in front
+     of that and they have to work out, unaided, which numbers to multiply and which not to. So when there is
+     more than one location, we do the multiplication ON THE SCREEN and label both halves explicitly. */
+  /* The old "All N locations" row is gone. The Total row now carries the estate columns itself, so restating
+     them underneath was just the same three numbers a second time, which is how a table starts looking like it
+     is trying to pad a result. */
+
+  html += '</tbody></table>'
+        + (locs > 1
+            ? '<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:rgba(38,112,246,.12);'
+              + 'border:1px solid rgba(38,112,246,.30);font-size:13.5px;color:#DBEAFE;line-height:1.55">'
+              + 'Your Culvana bill would be <b style="color:#fff">' + usd(culvTotal * locs) + ' a month</b> across '
+              + locs.toLocaleString('en-US') + ' locations. You pay <b style="color:#fff">' + usd(payNowTotal * locs) + '</b> today.'
+              + '</div>'
+            : '')
+        + '<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09)">'
+        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#64748B;font-weight:700">And you don\'t buy</div>'
+        + '<div style="font-size:24px;font-weight:700;color:#fff;margin-top:4px">' + usd(hardware)
+        + ' <span style="font-size:13px;color:#64748B;font-weight:500">of hardware'
+        + (locs > 1 ? ', across all ' + locs.toLocaleString('en-US') + ' locations' : '') + '</span></div>'
+        + '<div style="font-size:12px;color:#64748B;margin-top:3px">Terminals and kitchen screens, about ' + usd(2600) + ' a site. Culvana runs in a browser on tablets you already own.</div>'
+        + '</div>';
+
+  /* At real scale, a percentage point is a negotiation, not a price list. Saying so costs us nothing and buys
+     credibility with exactly the buyer who can tell when they are being handled. */
+  /* THE WORK AND THE MARGIN. Below the bills, visually separated, explicitly estimated. */
+  html += '<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09)">'
+        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#64748B;font-weight:700;margin-bottom:2px">And the part nobody puts on a calculator</div>'
+        + '<div style="font-size:11.5px;color:#64748B;margin-bottom:10px;line-height:1.5">Estimated, not billed. Change these inputs or set them to zero: the table above stands entirely without them.</div>'
+        + '<table><tbody>'
+        + '<tr><td style="color:#CBD5E1;border-color:rgba(255,255,255,.09)">Counting, ordering, month-end<div style="font-size:11px;color:#64748B">'
+          + Math.round(opsHours + consolidationHours).toLocaleString('en-US') + ' hours a month handed back'
+          + (consolidationHours > 0 ? ', including ' + consolidationHours + 'h consolidating ' + locs + ' P&Ls' : '')
+          + '</div></td>'
+        + '<td class="num" style="text-align:right;color:#34D399;font-weight:700;border-color:rgba(255,255,255,.09)">' + usd(labourSaved) + '</td></tr>'
+        + '<tr><td style="color:#CBD5E1;border:none">Margin you stop leaking<div style="font-size:11px;color:#64748B">'
+          + v('recover') + '% of ' + usd(purch * locs) + ' of purchases. Price creep caught the day it lands, not in the P&L three weeks later.'
+          + '</div></td>'
+        + '<td class="num" style="text-align:right;color:#34D399;font-weight:700;border:none">' + usd(marginSaved) + '</td></tr>'
+        + '</tbody></table></div>';
+
+  if (locs >= 25) {
+    html += '<div style="margin-top:16px;padding:12px 14px;border-radius:10px;background:rgba(38,112,246,.14);'
+          + 'border:1px solid rgba(38,112,246,.35);font-size:12.5px;color:#BFDBFE;line-height:1.55">'
+          + '<b style="color:#fff">At ' + locs.toLocaleString('en-US') + ' locations these are list prices.</b> '
+          + 'Nobody buys at list at this scale, and neither the processing rate nor the platform fee is where '
+          + 'the conversation ends. Talk to us.'
+          + '</div>';
+  }
+
+  document.getElementById('out').innerHTML = html;
+
+  /* Remember what they would save, so every other page can say it back to them. This is the site's only
+     urgency mechanic and it is entirely their own arithmetic. */
+  try { localStorage.setItem('cv-save', String(Math.max(0, trueSaved))); } catch(e){}
+}
+
+['kind','locs','vol','rate','pertxn','ticket','sw','pos','inv','ops','purch','recover','wage','paper'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', calc);
+});
+calc();
+
+/**
+ * Prefill the lead form from the calculator, and put THEIR number in the headline above it.
+ *
+ * They just typed their card volume in. Asking them for it again twenty pixels lower is the kind of thing that
+ * makes people close the tab, and card volume is the single field that decides what this deal is worth to us,
+ * so it is the one we least want them to skip.
+ *
+ * The form is rendered by a script we serve, so we wait for it and then fill it in.
+ */
+(function carryOver(tries){
+  var f = document.querySelector('#culvana-lead-form form');
+  if (!f) { if ((tries||0) < 40) return setTimeout(function(){ carryOver((tries||0)+1); }, 150); return; }
+
+  var vol = v('vol'), locs = Math.max(1, v('locs'));
+  var set = function(name, val){ var el = f.querySelector('[name="'+name+'"]'); if (el && val) el.value = val; };
+  set('volume', vol);
+  set('locations', locs);
+
+  // Tell the salesperson what the prospect was looking at when they filled this in. That context is the
+  // difference between a cold call and a conversation that starts in the middle.
+  var kindText = document.getElementById('kind').selectedOptions[0].textContent;
+  var msg = f.querySelector('[name="message"]');
+  if (msg && !msg.value) {
+    msg.value = kindText + ', ' + locs + ' location' + (locs>1?'s':'') +
+                '. Calculator said I\'d save about ' + document.querySelector('#out .big').textContent.split('/')[0].trim() + '/mo.';
+  }
+
+  // The headline becomes their own number.
+  var savedEl = document.querySelector('#out .big');
+  if (savedEl) {
+    document.getElementById('talkHead').textContent =
+      'Let\'s see if that ' + savedEl.textContent.split('/')[0].trim() + ' a month is real.';
+  }
+})(0);
+</script>
+
+<!-- Same embed as the home page. Served from the app, so it is always the current form, a pasted one silently
+     stops collecting the day we add a field. -->
+<!--
+  THE FORM IS GENERATED BY THIS SCRIPT. The <div id="culvana-lead-form"> above is an empty mount, the script
+  builds the fields, wires the submit, and posts to /v1/leads. If the script 404s you get an empty div and no
+  error, which is exactly how a broken lead form goes unnoticed for a month.
+
+  LOCAL TESTING: point data-api at the API you are actually running.
+    <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script>
+
+  PRODUCTION: once app.culvana.com is live, switch back to the line below.
+-->
+<!-- <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script> -->
+<script src="https://app.culvana.com/embed/lead-form.js" data-mount="culvana-lead-form" data-api="https://app.culvana.com"></script>
+
+<script>
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+  /* Follow the OS unless they have made a choice. Once they have, respect it: overriding a person's explicit
+     click because their laptop went dark at sunset is the software deciding it knows better. */
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
+      var chosen = null;
+      try { chosen = localStorage.getItem('cv-theme'); } catch(err){}
+      if (chosen) return;
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      paint();
+    });
+  }
+})();
+</script>
+<script>
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '\u2715' : '\u2630';
+  });
+  /* Close on navigate. A menu that stays open over the section you just jumped to is a menu that
+     hides the thing you asked to see. */
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='\u2630'; });
+  });
+})();
+</script>
+</body>
+</html>
