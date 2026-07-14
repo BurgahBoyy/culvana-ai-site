@@ -23,20 +23,51 @@
 })();
 </script>
 <style>
+  /* RESULT CARD THEME TOKENS.
+     This card was hard-coded navy-with-white-text regardless of site theme, which is correct in dark
+     mode (it matches the hero) and wrong in light mode (a black box sitting on an otherwise white page
+     looks like a mistake, not a design choice). Every colour the result card uses is a token here, with
+     a light-mode value and a dark-mode override, the same pattern the rest of the site already uses for
+     --ink/--line/--card etc. */
+  :root{
+    --r-bg: linear-gradient(165deg,#EEF4FF,#E3EBFC);
+    --r-ink: var(--ink); --r-ink2: var(--ink-soft); --r-sub: var(--mute); --r-mute: var(--mute);
+    --r-line: var(--line);
+    --r-save: var(--sage); --r-cost: var(--danger); --r-amber: var(--amber); --r-accent: var(--brand);
+    --r-chip1-bg: rgba(5,150,105,.10); --r-chip1-ink: #047857;
+    --r-chip2-bg: rgba(51,65,85,.06);
+    --r-blue-bg: rgba(38,112,246,.08); --r-blue-border: rgba(38,112,246,.28); --r-blue-ink: #1E3A8A;
+  }
+  html[data-theme="dark"]{
+    --r-bg: var(--navy);
+    --r-ink: #fff; --r-ink2: #CBD5E1; --r-sub: #94A3B8; --r-mute: #64748B;
+    --r-line: rgba(255,255,255,.09);
+    --r-save: #34D399; --r-cost: #F87171; --r-amber: #FBBF24; --r-accent: #60A5FA;
+    --r-chip1-bg: rgba(52,211,153,.12); --r-chip1-ink: #34D399;
+    --r-chip2-bg: rgba(148,163,184,.10);
+    --r-blue-bg: rgba(38,112,246,.12); --r-blue-border: rgba(38,112,246,.30); --r-blue-ink: #DBEAFE;
+  }
+
   .calc{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start}
   .field{margin-bottom:16px}
   .field label{display:block;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
   .field input.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit}
   .field .hint{font-size:11.5px;color:var(--mute);margin-top:4px;line-height:1.5}
-  .result{background:var(--navy);color:#fff;border-radius:var(--r);padding:28px;position:sticky;top:86px}
+  .result{background:var(--r-bg);color:var(--r-ink);border-radius:var(--r);padding:28px;position:sticky;top:86px}
   .big{font-size:52px;font-weight:700;letter-spacing:-.03em;line-height:1;margin:6px 0}
-  .result table{color:#CBD5E1}
-  .result th.result td{border-bottom:1px solid rgba(255,255,255,.09);padding:11px 0}
-  .result th{color:#64748B}
-  .result td.num{color:#fff}
-  .save{color:#34D399;font-weight:700}
-  .cost{color:#F87171}
+  .result table{color:var(--r-ink2)}
+  .result th.result td{border-bottom:1px solid var(--r-line);padding:11px 0}
+  .result th{color:var(--r-mute)}
+  .result td.num{color:var(--r-ink)}
+  .save{color:var(--r-save);font-weight:700}
+  .cost{color:var(--r-cost)}
   @media(max-width:860px){.calc{grid-template-columns:1fr}.result{position:static}}
+
+  /* The "Your operation" card in dark mode was close enough in tone to the navy result card that the
+     two blurred into one shape. Give the input surface a flatter, more neutral dark tone so it reads as
+     "the form" and the result card reads as "the answer" beside it. Light mode already has enough
+     contrast between a white card and the page, so this only applies in dark mode. */
+  html[data-theme="dark"] .calc > div > .card{ background:#0A0F18; border-color:#1B2536; }
 
   /* SLIDERS. Fourteen typed number fields is a form. A slider you can drag while glancing at the total
      move live is a toy, and toys get finished. The number box next to each one stays, for anyone who
@@ -57,26 +88,57 @@
   .slidewrap .numbox{flex:none;width:100px}
   .slidewrap .numbox input{
     width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
-    font-size:14px;font-family:inherit;text-align:right
+    font-size:14px;font-family:inherit;text-align:right;
+    background:var(--bg-soft);color:var(--ink)
   }
 
   /* FINE-TUNE. Three fields up front (kind, locations, volume) get a real number on screen instantly.
-     The other nine are pre-filled the moment you pick a kind, tucked behind a disclosure so the form
-     never looks like fourteen fields even though every one of them still argues with you if it's wrong. */
-  .finetune{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}
-  .finetune summary{
-    cursor:pointer;font-size:13.5px;font-weight:700;color:var(--brand);list-style:none;
-    display:flex;align-items:center;gap:7px;user-select:none;padding:10px 0
+     The other nine are pre-filled the moment you pick a kind. They used to be tucked behind a click-to-
+     open disclosure; Rob's call was that hiding nine already-correct fields behind a toggle just adds a
+     click nobody wants to make, so the section is a plain always-visible panel now, only visually set
+     apart from the basics above it. */
+  .finetune{margin-top:6px;border-top:1px solid var(--line);padding-top:14px}
+  .finetune-label{
+    font-size:13.5px;font-weight:700;color:var(--brand);
+    display:flex;align-items:center;gap:7px;margin-bottom:2px
   }
-  .finetune summary::-webkit-details-marker{display:none}
-  .finetune summary .car{display:inline-block;transition:transform .15s;font-size:11px}
-  .finetune[open] summary .car{transform:rotate(90deg)}
-  .finetune-body{background:var(--bg-soft);border-radius:10px;padding:14px 16px 4px;margin-top:2px}
+  .finetune-body{background:var(--bg-soft);border-radius:10px;padding:14px 16px 4px;margin-top:10px}
   .finetune-body .field:first-of-type{margin-top:8px}
-  .finetune summary .count{
-    font-weight:500;color:var(--mute);background:var(--bg-soft);border-radius:999px;
-    padding:2px 9px;font-size:11.5px;margin-left:2px
+  .finetune-label .count{
+    font-weight:500;color:var(--mute);background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:2px 9px;font-size:11.5px;margin-left:2px
   }
+
+  /* CUSTOM DROPDOWN for "What kind of place is it?". A native <select> can't be themed once it's open
+     in most browsers, so it always looks like a different piece of software was bolted onto the page.
+     This is a button + a themed menu that mirror a real, still-functional <select> underneath (kept for
+     keyboard and screen-reader users), so nothing about the calculator's own logic has to know the
+     difference. */
+  .csel{position:relative}
+  .csel-native{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0
+  }
+  .csel-btn{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--bg-soft);
+    color:var(--ink);font-size:15px;font-family:inherit;cursor:pointer;text-align:left;transition:.15s
+  }
+  .csel-btn:hover{border-color:var(--brand)}
+  .csel.open .csel-btn{border-color:var(--brand);box-shadow:0 0 0 3px rgba(38,112,246,.15)}
+  .csel-chev{color:var(--mute);flex:none;transition:transform .18s}
+  .csel.open .csel-chev{transform:rotate(180deg);color:var(--brand)}
+  .csel-list{
+    position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:6px;box-shadow:0 24px 50px -18px rgba(0,0,0,.35);
+    max-height:300px;overflow-y:auto;
+    opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s,transform .15s
+  }
+  .csel.open .csel-list{opacity:1;transform:none;pointer-events:auto}
+  .csel-opt{padding:9px 12px;border-radius:8px;font-size:14.5px;color:var(--ink-soft);cursor:pointer}
+  .csel-opt:hover{background:var(--bg-soft);color:var(--ink)}
+  .csel-opt.sel{background:rgba(38,112,246,.10);color:var(--brand);font-weight:600}
 
   /* DEPTH. Two flat-bordered boxes side by side reads like a spreadsheet. A little lift and, on the
      result card, the same blurred-blob mesh the hero uses (much smaller, much quieter) ties this page
@@ -84,7 +146,8 @@
   .calc .card{box-shadow:0 20px 46px -32px rgba(15,23,42,.22)}
   html[data-theme="dark"] .calc .card{box-shadow:0 20px 46px -26px rgba(0,0,0,.55)}
   .result{position:sticky;top:86px;isolation:isolate;overflow:hidden;box-shadow:0 26px 60px -28px rgba(0,0,0,.5)}
-  .result .rmesh{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit}
+  .result .rmesh{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;opacity:.5}
+  html[data-theme="dark"] .result .rmesh{opacity:1}
   .result .rmesh i{position:absolute;border-radius:50%;filter:blur(70px);animation:rdrift 20s ease-in-out infinite}
   .result .rmesh .rb1{width:280px;height:280px;background:#2670F6;opacity:.30;top:-120px;right:-70px}
   .result .rmesh .rb2{width:240px;height:240px;background:#7C3AED;opacity:.20;bottom:-110px;left:-60px;animation-delay:-9s}
@@ -145,17 +208,35 @@
       </div>
 
       <div class="field">
-        <label>What kind of place is it?</label>
-        <select id="kind">
-          <option value="fsr">Full-service restaurant</option>
-          <option value="qsr">Fast casual / QSR</option>
-          <option value="bar">Bar or club</option>
-          <option value="cafe">Café or bakery</option>
-          <option value="catering">Catering</option>
-          <option value="ghost">Meal prep / ghost kitchen</option>
-          <option value="multi">Multi-unit or franchise</option>
-          <option value="commissary">Commissary / central kitchen</option>
-        </select>
+        <label id="kindLabel">What kind of place is it?</label>
+        <div class="csel" id="kindSel">
+          <button type="button" class="csel-btn" id="kindBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="kindLabel">
+            <span id="kindBtnLabel">Full-service restaurant</span>
+            <svg class="csel-chev" width="11" height="7" viewBox="0 0 11 7" fill="none" aria-hidden="true">
+              <path d="M1 1l4.5 4.5L10 1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="csel-list" id="kindList" role="listbox" tabindex="-1" aria-labelledby="kindLabel">
+            <div class="csel-opt sel" data-value="fsr" role="option" aria-selected="true">Full-service restaurant</div>
+            <div class="csel-opt" data-value="qsr" role="option" aria-selected="false">Fast casual / QSR</div>
+            <div class="csel-opt" data-value="bar" role="option" aria-selected="false">Bar or club</div>
+            <div class="csel-opt" data-value="cafe" role="option" aria-selected="false">Café or bakery</div>
+            <div class="csel-opt" data-value="catering" role="option" aria-selected="false">Catering</div>
+            <div class="csel-opt" data-value="ghost" role="option" aria-selected="false">Meal prep / ghost kitchen</div>
+            <div class="csel-opt" data-value="multi" role="option" aria-selected="false">Multi-unit or franchise</div>
+            <div class="csel-opt" data-value="commissary" role="option" aria-selected="false">Commissary / central kitchen</div>
+          </div>
+          <select id="kind" class="csel-native" aria-hidden="true" tabindex="-1">
+            <option value="fsr">Full-service restaurant</option>
+            <option value="qsr">Fast casual / QSR</option>
+            <option value="bar">Bar or club</option>
+            <option value="cafe">Café or bakery</option>
+            <option value="catering">Catering</option>
+            <option value="ghost">Meal prep / ghost kitchen</option>
+            <option value="multi">Multi-unit or franchise</option>
+            <option value="commissary">Commissary / central kitchen</option>
+          </select>
+        </div>
         <div class="hint" id="kindHint">Tables, courses, tips. The hardware bill is usually the biggest surprise here.</div>
       </div>
 
@@ -181,8 +262,8 @@
         like yours. Open it up and fix anything that's wrong, that's the whole point of the exercise.
       </div>
 
-      <details class="finetune">
-        <summary><span class="car">&#9656;</span> Fine-tune these numbers <span class="count">9 fields, already filled in</span></summary>
+      <div class="finetune">
+        <div class="finetune-label">Fine-tune these numbers <span class="count">9 fields, already filled in</span></div>
         <div class="finetune-body">
 
         <div class="field">
@@ -266,7 +347,7 @@
           <div class="hint">Manager or bookkeeper rate, loaded. We assume 4 minutes per invoice, typed by hand, that's conservative.</div>
         </div>
         </div>
-      </details>
+      </div>
     </div>
   </div>
 
@@ -346,6 +427,72 @@ var HINTS = {
 };
 var kind = document.getElementById('kind');
 
+/* CUSTOM DROPDOWN. The real <select id="kind"> stays in the DOM as the single source of truth (every
+   other script on this page reads and writes it exactly as before) but is visually hidden; this button
+   + menu is what people actually see and click, and it just keeps the hidden select in sync.
+   syncKindButton is exposed so anything that sets kind.value directly, without going through the menu
+   (restoring a saved session, hitting Reset), can repaint the button's label to match. */
+var syncKindButton = function(){};
+(function(){
+  var wrap = document.getElementById('kindSel');
+  var btn = document.getElementById('kindBtn');
+  var btnLabel = document.getElementById('kindBtnLabel');
+  var list = document.getElementById('kindList');
+  var opts = Array.prototype.slice.call(list.querySelectorAll('.csel-opt'));
+  var activeIdx = 0;
+
+  function paintSelected(){
+    opts.forEach(function(o, i){
+      var isSel = o.dataset.value === kind.value;
+      o.classList.toggle('sel', isSel);
+      o.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      if (isSel) { btnLabel.textContent = o.textContent; activeIdx = i; }
+    });
+  }
+  function openList(){
+    wrap.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function closeList(){
+    wrap.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+  function choose(opt){
+    kind.value = opt.dataset.value;
+    kind.dispatchEvent(new Event('change', { bubbles: true }));
+    paintSelected();
+    closeList();
+    btn.focus();
+  }
+
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    wrap.classList.contains('open') ? closeList() : openList();
+  });
+  opts.forEach(function(o){
+    o.addEventListener('click', function(){ choose(o); });
+  });
+  document.addEventListener('click', function(e){
+    if (!wrap.contains(e.target)) closeList();
+  });
+  btn.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!wrap.classList.contains('open')) { openList(); return; }
+      activeIdx = Math.max(0, Math.min(opts.length - 1, activeIdx + (e.key === 'ArrowDown' ? 1 : -1)));
+      opts[activeIdx].scrollIntoView({ block: 'nearest' });
+      opts.forEach(function(o, i){ o.style.background = i === activeIdx ? 'var(--bg-soft)' : ''; });
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      if (wrap.classList.contains('open')) { e.preventDefault(); choose(opts[activeIdx]); }
+    } else if (e.key === 'Escape') {
+      closeList();
+    }
+  });
+
+  paintSelected();
+  syncKindButton = paintSelected;
+})();
+
 /* PERSISTENCE. This calculator asks for competitor pricing, real vendor statements and internal
    numbers, so losing it on a refresh or an accidental back-button is not a minor bug. Every input is
    saved to this device on every keystroke and restored before the first render. Nothing leaves the
@@ -366,6 +513,7 @@ if (savedInputs) {
 var userHasSavedData = !!savedInputs;
 
 document.getElementById('kindHint').textContent = HINTS[kind.value];
+syncKindButton();
 
 var usd = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
 var v = function(id){ return parseFloat(document.getElementById(id).value) || 0; };
@@ -496,7 +644,7 @@ function calc(){
 
   var rows = [
     ['Processing rate',                            vol * rate,     vol * 0.025],
-    ['Per-swipe fee<div style="font-size:11px;color:#64748B;font-weight:400">'
+    ['Per-swipe fee<div style="font-size:11px;color:var(--r-mute);font-weight:400">'
       + Math.round(txns).toLocaleString('en-US') + ' transactions a month</div>', txns * pertxn, txns * 0.10],
     ['Software you pay for today',                 payNowSoft,     culvPlat],
     ['AI (invoices, answers)',                     0,              culvAi],
@@ -506,9 +654,9 @@ function calc(){
 
   var html = ''
     + '<div class="rmesh"><i class="rb1"></i><i class="rb2"></i></div>'
-    + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;font-weight:700">You would save</div>'
-    + '<div class="big ' + (trueSaved >= 0 ? 'save' : 'cost') + '">' + usd(Math.abs(trueSaved)) + '<span style="font-size:17px;color:#64748B;font-weight:500">/month</span></div>'
-    + '<div style="color:#94A3B8;font-size:14px;margin-bottom:10px">'
+    + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--r-accent);font-weight:700">You would save</div>'
+    + '<div class="big ' + (trueSaved >= 0 ? 'save' : 'cost') + '">' + usd(Math.abs(trueSaved)) + '<span style="font-size:17px;color:var(--r-mute);font-weight:500">/month</span></div>'
+    + '<div style="color:var(--r-sub);font-size:14px;margin-bottom:10px">'
       + (trueSaved >= 0
           ? usd(trueSaved * 12) + ' a year across ' + locs + ' location' + (locs>1?'s':'')
           : 'Culvana would cost you more. We would rather show you that than hide it.')
@@ -516,28 +664,28 @@ function calc(){
     /* THE SPLIT. A buyer has to be able to throw away everything we estimated and still like the number.
        So the certain money and the estimated money are never added together without being shown apart. */
     + '<div style="display:flex;gap:10px;margin-bottom:16px;font-size:12.5px">'
-      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:rgba(52,211,153,.12)">'
-        + '<div style="color:#34D399;font-weight:700;font-size:15px">' + usd(saveAll) + '</div>'
-        + '<div style="color:#94A3B8">bills you stop paying</div></div>'
-      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:rgba(148,163,184,.10)">'
-        + '<div style="color:#CBD5E1;font-weight:700;font-size:15px">' + usd(softSaved) + '</div>'
-        + '<div style="color:#64748B">work and margin, estimated</div></div>'
+      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:var(--r-chip1-bg)">'
+        + '<div style="color:var(--r-chip1-ink);font-weight:700;font-size:15px">' + usd(saveAll) + '</div>'
+        + '<div style="color:var(--r-sub)">bills you stop paying</div></div>'
+      + '<div style="flex:1;padding:9px 11px;border-radius:9px;background:var(--r-chip2-bg)">'
+        + '<div style="color:var(--r-ink2);font-weight:700;font-size:15px">' + usd(softSaved) + '</div>'
+        + '<div style="color:var(--r-mute)">work and margin, estimated</div></div>'
     + '</div>'
     + (waived
-        ? '<div style="font-size:12.5px;color:#34D399;margin-bottom:16px">Your platform fee is $0, you clear the $20,000 floor.</div>'
-        : '<div style="font-size:12.5px;color:#FBBF24;margin-bottom:16px">Below $20,000/mo of card volume, so the $55 platform fee applies.</div>')
+        ? '<div style="font-size:12.5px;color:var(--r-chip1-ink);margin-bottom:16px">Your platform fee is $0, you clear the $20,000 floor.</div>'
+        : '<div style="font-size:12.5px;color:var(--r-amber);margin-bottom:16px">Below $20,000/mo of card volume, so the $55 platform fee applies.</div>')
     + '<table><thead><tr>'
       + '<th></th>'
-      + '<th class="num" style="text-align:right;color:#64748B">Now' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
-      + '<th class="num" style="text-align:right;color:#64748B">Culvana' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
+      + '<th class="num" style="text-align:right;color:var(--r-mute)">Now' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
+      + '<th class="num" style="text-align:right;color:var(--r-mute)">Culvana' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
       /* AT SCALE, THE READER NEEDS THREE THINGS AND WE WERE GIVING THEM ONE.
          What they pay now across the estate, WHAT THEY WOULD PAY US across the estate, and the difference. The
          middle one was missing entirely: the table showed a $3,000 saving on a line and never once said "your
          AI bill would be $3,000 a month". A buyer does not sign a saving. They sign an invoice. */
       + (locs > 1
-          ? '<th class="num" style="text-align:right;color:#64748B">Now<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
-            + '<th class="num" style="text-align:right;color:#93C5FD">Culvana<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
-            + '<th class="num" style="text-align:right;color:#34D399">You save</th>'
+          ? '<th class="num" style="text-align:right;color:var(--r-mute)">Now<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
+            + '<th class="num" style="text-align:right;color:var(--r-accent)">Culvana<div style="font-size:9.5px;font-weight:500">all ' + locs.toLocaleString('en-US') + '</div></th>'
+            + '<th class="num" style="text-align:right;color:var(--r-save)">You save</th>'
           : '')
       + '</tr></thead><tbody>';
 
@@ -547,24 +695,24 @@ function calc(){
     var delta   = culvAll - nowAll;              // negative = saving, positive = it costs more
     html += '<tr><td>' + r[0] + '</td>'
           + '<td class="num" style="text-align:right">' + (r[1] > 0 ? usd(r[1]) : '\u2014') + '</td>'
-          + '<td class="num" style="text-align:right;color:' + (r[2] < r[1] ? '#34D399' : '#fff') + '">' + (r[2] > 0 ? usd(r[2]) : '\u2014') + '</td>'
+          + '<td class="num" style="text-align:right;color:' + (r[2] < r[1] ? 'var(--r-save)' : 'var(--r-ink)') + '">' + (r[2] > 0 ? usd(r[2]) : '\u2014') + '</td>'
           + (locs > 1
-              ? '<td class="num" style="text-align:right;color:#94A3B8">' + (nowAll > 0 ? usd(nowAll) : '\u2014') + '</td>'
-                + '<td class="num" style="text-align:right;font-weight:600;color:#fff">' + (culvAll > 0 ? usd(culvAll) : '\u2014') + '</td>'
-                + '<td class="num" style="text-align:right;font-weight:700;color:' + (delta < 0 ? '#34D399' : delta > 0 ? '#F87171' : '#64748B') + '">'
+              ? '<td class="num" style="text-align:right;color:var(--r-sub)">' + (nowAll > 0 ? usd(nowAll) : '\u2014') + '</td>'
+                + '<td class="num" style="text-align:right;font-weight:600;color:var(--r-ink)">' + (culvAll > 0 ? usd(culvAll) : '\u2014') + '</td>'
+                + '<td class="num" style="text-align:right;font-weight:700;color:' + (delta < 0 ? 'var(--r-save)' : delta > 0 ? 'var(--r-cost)' : 'var(--r-mute)') + '">'
                   + (delta === 0 ? '\u2014' : (delta < 0 ? '\u2212' : '+') + usd(Math.abs(delta)))
                 + '</td>'
               : '')
           + '</tr>';
   });
 
-  html += '<tr style="font-weight:700"><td style="color:#fff">Total</td>'
-        + '<td class="num" style="text-align:right;color:#fff">' + usd(payNowTotal) + '</td>'
-        + '<td class="num" style="text-align:right;color:#34D399">' + usd(culvTotal) + '</td>'
+  html += '<tr style="font-weight:700"><td style="color:var(--r-ink)">Total</td>'
+        + '<td class="num" style="text-align:right;color:var(--r-ink)">' + usd(payNowTotal) + '</td>'
+        + '<td class="num" style="text-align:right;color:var(--r-save)">' + usd(culvTotal) + '</td>'
         + (locs > 1
-            ? '<td class="num" style="text-align:right;color:#94A3B8">' + usd(payNowTotal * locs) + '</td>'
-              + '<td class="num" style="text-align:right;color:#fff;font-weight:800">' + usd(culvTotal * locs) + '</td>'
-              + '<td class="num" style="text-align:right;color:#34D399;font-weight:800">\u2212' + usd(saveAll) + '</td>'
+            ? '<td class="num" style="text-align:right;color:var(--r-sub)">' + usd(payNowTotal * locs) + '</td>'
+              + '<td class="num" style="text-align:right;color:var(--r-ink);font-weight:800">' + usd(culvTotal * locs) + '</td>'
+              + '<td class="num" style="text-align:right;color:var(--r-save);font-weight:800">\u2212' + usd(saveAll) + '</td>'
             : '')
         + '</tr>';
 
@@ -578,42 +726,42 @@ function calc(){
 
   html += '</tbody></table>'
         + (locs > 1
-            ? '<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:rgba(38,112,246,.12);'
-              + 'border:1px solid rgba(38,112,246,.30);font-size:13.5px;color:#DBEAFE;line-height:1.55">'
-              + 'Your Culvana bill would be <b style="color:#fff">' + usd(culvTotal * locs) + ' a month</b> across '
-              + locs.toLocaleString('en-US') + ' locations. You pay <b style="color:#fff">' + usd(payNowTotal * locs) + '</b> today.'
+            ? '<div style="margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--r-blue-bg);'
+              + 'border:1px solid var(--r-blue-border);font-size:13.5px;color:var(--r-blue-ink);line-height:1.55">'
+              + 'Your Culvana bill would be <b style="color:var(--r-ink)">' + usd(culvTotal * locs) + ' a month</b> across '
+              + locs.toLocaleString('en-US') + ' locations. You pay <b style="color:var(--r-ink)">' + usd(payNowTotal * locs) + '</b> today.'
               + '</div>'
             : '')
-        + '<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09)">'
-        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#64748B;font-weight:700">And you don\'t buy</div>'
-        + '<div style="font-size:24px;font-weight:700;color:#fff;margin-top:4px">' + usd(hardware)
-        + ' <span style="font-size:13px;color:#64748B;font-weight:500">of hardware'
+        + '<div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--r-line)">'
+        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--r-mute);font-weight:700">And you don\'t buy</div>'
+        + '<div style="font-size:24px;font-weight:700;color:var(--r-ink);margin-top:4px">' + usd(hardware)
+        + ' <span style="font-size:13px;color:var(--r-mute);font-weight:500">of hardware'
         + (locs > 1 ? ', across all ' + locs.toLocaleString('en-US') + ' locations' : '') + '</span></div>'
-        + '<div style="font-size:12px;color:#64748B;margin-top:3px">Terminals and kitchen screens, about ' + usd(2600) + ' a site. Culvana runs in a browser on tablets you already own.</div>'
+        + '<div style="font-size:12px;color:var(--r-mute);margin-top:3px">Terminals and kitchen screens, about ' + usd(2600) + ' a site. Culvana runs in a browser on tablets you already own.</div>'
         + '</div>';
 
   /* At real scale, a percentage point is a negotiation, not a price list. Saying so costs us nothing and buys
      credibility with exactly the buyer who can tell when they are being handled. */
   /* THE WORK AND THE MARGIN. Below the bills, visually separated, explicitly estimated. */
-  html += '<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09)">'
-        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#64748B;font-weight:700;margin-bottom:2px">And the part nobody puts on a calculator</div>'
-        + '<div style="font-size:11.5px;color:#64748B;margin-bottom:10px;line-height:1.5">Estimated, not billed. Change these inputs or set them to zero: the table above stands entirely without them.</div>'
+  html += '<div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--r-line)">'
+        + '<div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--r-mute);font-weight:700;margin-bottom:2px">And the part nobody puts on a calculator</div>'
+        + '<div style="font-size:11.5px;color:var(--r-mute);margin-bottom:10px;line-height:1.5">Estimated, not billed. Change these inputs or set them to zero: the table above stands entirely without them.</div>'
         + '<table><tbody>'
-        + '<tr><td style="color:#CBD5E1;border-color:rgba(255,255,255,.09)">Counting, ordering, month-end<div style="font-size:11px;color:#64748B">'
+        + '<tr><td style="color:var(--r-ink2);border-color:var(--r-line)">Counting, ordering, month-end<div style="font-size:11px;color:var(--r-mute)">'
           + Math.round(opsHours + consolidationHours).toLocaleString('en-US') + ' hours a month handed back'
           + (consolidationHours > 0 ? ', including ' + consolidationHours + 'h consolidating ' + locs + ' P&Ls' : '')
           + '</div></td>'
-        + '<td class="num" style="text-align:right;color:#34D399;font-weight:700;border-color:rgba(255,255,255,.09)">' + usd(labourSaved) + '</td></tr>'
-        + '<tr><td style="color:#CBD5E1;border:none">Margin you stop leaking<div style="font-size:11px;color:#64748B">'
+        + '<td class="num" style="text-align:right;color:var(--r-save);font-weight:700;border-color:var(--r-line)">' + usd(labourSaved) + '</td></tr>'
+        + '<tr><td style="color:var(--r-ink2);border:none">Margin you stop leaking<div style="font-size:11px;color:var(--r-mute)">'
           + v('recover') + '% of ' + usd(purch * locs) + ' of purchases. Price creep caught the day it lands, not in the P&L three weeks later.'
           + '</div></td>'
-        + '<td class="num" style="text-align:right;color:#34D399;font-weight:700;border:none">' + usd(marginSaved) + '</td></tr>'
+        + '<td class="num" style="text-align:right;color:var(--r-save);font-weight:700;border:none">' + usd(marginSaved) + '</td></tr>'
         + '</tbody></table></div>';
 
   if (locs >= 25) {
-    html += '<div style="margin-top:16px;padding:12px 14px;border-radius:10px;background:rgba(38,112,246,.14);'
-          + 'border:1px solid rgba(38,112,246,.35);font-size:12.5px;color:#BFDBFE;line-height:1.55">'
-          + '<b style="color:#fff">At ' + locs.toLocaleString('en-US') + ' locations these are list prices.</b> '
+    html += '<div style="margin-top:16px;padding:12px 14px;border-radius:10px;background:var(--r-blue-bg);'
+          + 'border:1px solid var(--r-blue-border);font-size:12.5px;color:var(--r-blue-ink);line-height:1.55">'
+          + '<b style="color:var(--r-ink)">At ' + locs.toLocaleString('en-US') + ' locations these are list prices.</b> '
           + 'Nobody buys at list at this scale, and neither the processing rate nor the platform fee is where '
           + 'the conversation ends. Talk to us.'
           + '</div>';
@@ -646,6 +794,7 @@ if (resetBtn) {
     e.preventDefault();
     FIELD_IDS.forEach(function(id){ document.getElementById(id).value = DEFAULTS[id]; });
     document.getElementById('kindHint').textContent = HINTS[kind.value];
+    syncKindButton();
     userHasSavedData = false; // a fresh reset behaves like a first-time visit: kind changes prefill again
     syncAllSliders();
     calc();
