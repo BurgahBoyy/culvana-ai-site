@@ -89,6 +89,20 @@ footer .base{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;font-si
 }
 
 
+/* NAV LOGINS. Two different products, two different accounts. One "Sign in" text link next to a
+   second unrelated link read as a mistake, not a choice. Two small, clearly separate buttons read
+   as "pick the one that's yours" instead. Desktop shows them as a pair of outline buttons; below
+   860px they move into the burger menu with the rest of the nav so the header doesn't crowd. */
+.nav-logins{display:flex;gap:8px;align-items:center}
+.nav-login{display:inline-flex;align-items:center;padding:8px 14px;border-radius:8px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink-soft);font-size:13.5px;font-weight:600;white-space:nowrap;transition:.15s}
+.nav-login:hover{border-color:var(--brand);color:var(--brand)}
+.navlogin-mobile{display:none}
+@media(max-width:860px){
+  .nav-logins{display:none}
+  .navlogin-mobile{display:block}
+}
+
 /* The toggle. A button, not a switch: two states, one word of meaning, no ambiguity about which way is on. */
 .theme-btn{background:none;border:1px solid var(--line);border-radius:9px;width:36px;height:36px;
   cursor:pointer;color:var(--ink-soft);font-size:15px;display:grid;place-items:center;transition:.15s}
