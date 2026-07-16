@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What Is Yield and How Does It Affect Your Recipe Costs? | Culvana</title>
+<meta name="description" content="What does yield mean in cooking? How do you calculate yield percentage? Learn the yield formula, standard food yields, and how yield drives your recipe costs.">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Culvana">
+<meta property="og:title" content="What Is Yield and How Does It Affect Your Recipe Costs?">
+<meta property="og:description" content="What does yield mean in cooking? How do you calculate yield percentage? The yield formula, standard food yields, and how yield drives recipe costs.">
+<meta property="og:url" content="https://culvana.ai/blog/what-is-yield-and-how-to-calculate-it/">
+<link rel="canonical" href="https://culvana.ai/blog/what-is-yield-and-how-to-calculate-it/">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"What Is Yield and How Does It Affect Your Recipe Costs?",
+  "datePublished":"2023-04-19",
+  "dateModified":"2026-07-15",
+  "author":{"@type":"Organization","name":"Culvana"},
+  "publisher":{"@type":"Organization","name":"Culvana","url":"https://culvana.ai"},
+  "mainEntityOfPage":"https://culvana.ai/blog/what-is-yield-and-how-to-calculate-it/"
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = saved || (sysDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<style>
+.article-wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.article-hero{padding:120px 0 32px}
+.article-hero h1{font-size:clamp(30px,4.5vw,44px);line-height:1.15;letter-spacing:-.02em;margin:14px 0 10px}
+.article-meta{font-size:13.5px;color:var(--mute)}
+.article-body{padding:8px 0 72px;font-size:17px;line-height:1.75;color:var(--ink-soft)}
+.article-body h2{font-size:26px;letter-spacing:-.01em;margin:44px 0 14px;color:var(--ink)}
+.article-body h3{font-size:19px;margin:30px 0 10px;color:var(--ink)}
+.article-body p{margin:0 0 18px}
+.article-body ol,.article-body ul{margin:0 0 18px;padding-left:22px}
+.article-body li{margin-bottom:9px}
+.article-body a{color:var(--brand);font-weight:600;text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.yield-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0 26px}
+.yield-card{background:var(--card,rgba(128,128,128,.06));border:1px solid rgba(128,128,128,.18);border-radius:14px;padding:18px 20px}
+.yield-card h4{margin:0 0 10px;font-size:15px}
+.yield-card ul{list-style:none;padding:0;margin:0;font-size:14px}
+.yield-card li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dashed rgba(128,128,128,.18);margin:0}
+.yield-card li:last-child{border-bottom:none}
+.yield-card b{font-variant-numeric:tabular-nums}
+.formula{background:var(--card,rgba(38,112,246,.07));border-left:3px solid var(--brand);border-radius:0 12px 12px 0;padding:16px 20px;margin:20px 0;font-weight:600;color:var(--ink)}
+.article-cta{background:linear-gradient(120deg,rgba(38,112,246,.10),rgba(124,58,237,.08));border:1px solid rgba(38,112,246,.25);border-radius:16px;padding:26px 28px;margin:40px 0 0}
+.article-cta h3{margin-top:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="/#how">How it works</a>
+      <a href="/#who">Who it's for</a>
+      <a href="/savings.html">What you'll save</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="https://app.culvana.ai" class="navlogin-mobile">Culvana Login</a>
+      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="nav-logins">
+        <a href="https://app.culvana.ai" class="nav-login">Culvana Login</a>
+        <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
+      </div>
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="/#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<header class="article-hero">
+  <div class="article-wrap">
+    <div class="eyebrow" style="color:#7DD3FC">Recipe costing fundamentals</div>
+    <h1>What Is Yield and How Does It Affect Your Recipe Costs?</h1>
+    <div class="article-meta">By the Culvana team &middot; Updated July 2026 &middot; Originally published on Recipe Costing Software, now part of Culvana</div>
+  </div>
+</header>
+
+<article class="article-body">
+  <div class="article-wrap">
+    <p>Have you ever wondered if you are utilizing your ingredients to their maximum potential? By calculating your food yield, you can see what percentage of a product you are actually using versus what is going to waste.</p>
+    <p>That number changes everything downstream: what you should order, what each portion truly costs, and whether the dish you're proudest of is quietly losing money. Culvana calculates yield automatically at the supplier, ingredient and recipe level &mdash; but the concept is worth understanding on paper first.</p>
+
+    <h2>What Does &ldquo;Yield&rdquo; Mean in Cooking?</h2>
+    <p>In the culinary industry, <strong>food yield</strong> refers to the amount of usable product left after an item has been processed &mdash; peeled, butchered, trimmed or chopped &mdash; before it goes into a recipe.</p>
+    <p>For example, a recipe might require 4 pounds of peeled potatoes. In that case, you would need to purchase about 4.2 pounds of raw potatoes, because after peeling you are left with the 4 pounds the recipe actually needs. The 4 pounds is the <em>yield</em>.</p>
+    <p>When purchasing food, you pay for the product in its entirety &mdash; but you never use all of it. The gap between what you buy and what you serve is where food cost hides.</p>
+
+    <h2>How to Calculate Yield Percentage in Food</h2>
+    <p>Here is the standard way to calculate yield percentage, using a primal beef loin as the example:</p>
+    <ol>
+      <li><strong>Find the original weight of the food item.</strong> This is your raw or as-purchased (AP) weight. Example: a primal beef loin cut weighs 129 pounds.</li>
+      <li><strong>Process the product, then weigh the waste or trim.</strong> After removing fat and bone, the waste weighs 34.3 pounds.</li>
+      <li><strong>Subtract the trim from the AP weight</strong> to get the edible product (EP) weight: 129 &minus; 34.3 = 94.7 pounds of processed beef loin.</li>
+      <li><strong>Convert EP weight into a percentage to find the yield percentage.</strong></li>
+    </ol>
+    <div class="formula">Yield % = (EP weight &divide; AP weight) &times; 100 &nbsp;&rarr;&nbsp; (94.7 &divide; 129) &times; 100 = 73.4%</div>
+    <p>With this number you know how much raw product to order and how much usable product you'll have after processing. Getting it right means placing spot-on food orders instead of paying for waste.</p>
+
+    <h2>What Is the Standard Yield in Food Production?</h2>
+    <p>These are typical yields for common products (source: <a href="https://www.usfoods.com/content/dam/dce/pdfs/Your-Business/Easy-Ordering/MPP_Online-Common_Product_Yields_and_Conversions.pdf" rel="noopener">US Foods product yields guide</a>):</p>
+
+    <div class="yield-grid">
+      <div class="yield-card">
+        <h4>🥦 Vegetables</h4>
+        <ul>
+          <li><span>Broccoli (florets only)</span><b>47%</b></li>
+          <li><span>Brussels sprouts (trimmed)</span><b>90%</b></li>
+          <li><span>Carrots</span><b>68%</b></li>
+          <li><span>Cauliflower (florets only)</span><b>53%</b></li>
+          <li><span>Corn (kernels off cob)</span><b>36%</b></li>
+          <li><span>Cucumber (pared, sliced)</span><b>84%</b></li>
+          <li><span>Eggplant (trimmed, pared)</span><b>81%</b></li>
+          <li><span>Garlic (peeled cloves)</span><b>87%</b></li>
+          <li><span>Mushrooms</span><b>90%</b></li>
+          <li><span>Onions</span><b>63%</b></li>
+          <li><span>Peppers</span><b>59%</b></li>
+          <li><span>Potatoes (hand-skinned, raw)</span><b>63%</b></li>
+          <li><span>Romaine</span><b>86%</b></li>
+          <li><span>Spinach (trimmed leaves)</span><b>72%</b></li>
+        </ul>
+      </div>
+      <div class="yield-card">
+        <h4>🍎 Fruits</h4>
+        <ul>
+          <li><span>Apples (peeled, cored)</span><b>40%</b></li>
+          <li><span>Avocado (skinned, seeded)</span><b>63%</b></li>
+          <li><span>Banana</span><b>66%</b></li>
+          <li><span>Cherries (flesh)</span><b>62%</b></li>
+          <li><span>Coconut (meat)</span><b>48%</b></li>
+          <li><span>Grapes (stems removed)</span><b>96%</b></li>
+          <li><span>Lemons (juiced, strained)</span><b>36%</b></li>
+          <li><span>Limes (juiced, strained)</span><b>47%</b></li>
+          <li><span>Mango (no pit or skin)</span><b>69%</b></li>
+          <li><span>Oranges (pared flesh)</span><b>44%</b></li>
+          <li><span>Peaches (no pit or skin)</span><b>76%</b></li>
+          <li><span>Pears (no pit or skin)</span><b>78%</b></li>
+          <li><span>Pineapple (peeled, cored)</span><b>38%</b></li>
+          <li><span>Strawberries (no stem)</span><b>90%</b></li>
+          <li><span>Tomato (stem and base)</span><b>90%</b></li>
+        </ul>
+      </div>
+      <div class="yield-card">
+        <h4>🥩 Meat</h4>
+        <ul>
+          <li><span>Beef chuck</span><b>85%</b></li>
+          <li><span>Beef flank</span><b>90%</b></li>
+          <li><span>Beef short ribs</span><b>68%</b></li>
+          <li><span>Strip steak, center cut</span><b>50%</b></li>
+          <li><span>Peeled tenderloin</span><b>52%</b></li>
+          <li><span>Lamb chop</span><b>75%</b></li>
+          <li><span>Pork chop</span><b>75%</b></li>
+          <li><span>Bacon</span><b>93%</b></li>
+          <li><span>Ham</span><b>85%</b></li>
+          <li><span>Veal chuck</span><b>80%</b></li>
+        </ul>
+      </div>
+      <div class="yield-card">
+        <h4>🐟 Poultry &amp; Fish</h4>
+        <ul>
+          <li><span>Chicken breast</span><b>87%</b></li>
+          <li><span>Chicken thigh</span><b>82%</b></li>
+          <li><span>Turkey, whole</span><b>90%</b></li>
+          <li><span>Cod (filet, no skin)</span><b>30%</b></li>
+          <li><span>Crab (king, from shell)</span><b>25%</b></li>
+          <li><span>Halibut (filet, no skin)</span><b>59%</b></li>
+          <li><span>Lobster (body, claw, tail)</span><b>28%</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>How Can Food Yields Impact Recipe Costs?</h2>
+    <p>Understanding food yield lets you calculate food costs accurately, because yield sits underneath both purchasing and waste.</p>
+
+    <h3>Purchasing Ingredients</h3>
+    <p>When purchasing, yield decides real cost. If you buy a whole chicken, you can use the meat <em>and</em> the bones for stock &mdash; a much higher effective yield than buying only chicken breasts. The cost per serving of the whole-chicken recipe ends up lower.</p>
+    <p>Using ingredients with higher yields &mdash; or capturing "waste" like vegetable trim in stocks &mdash; reduces what you throw away and what you pay per usable pound.</p>
+
+    <h3>Portion Sizes and Overall Cost</h3>
+    <p>Yields also drive portions. Ingredients with lower yields require you to buy more raw product to hit the same plated amount, raising the recipe's true cost. And cooked-versus-raw matters: if a recipe calls for a weight of <em>cooked</em> pasta or rice, the raw quantity you order has to account for the cooking yield.</p>
+    <p>Factoring yield into every recipe is how you price a menu on facts instead of guesses.</p>
+
+    <h2>How Culvana Calculates Yield For You</h2>
+    <p>Yield math is simple once &mdash; and brutal times three hundred ingredients whose prices change weekly. That's the part software should do.</p>
+    <p>Culvana (built by the team behind Recipe Costing Software) yields at every level &mdash; supplier, ingredient and recipe. Enter a yield percentage or a portion size and every affected cost recalculates instantly. When an invoice lands, the AI reads it, updates your ingredient costs, applies your yields, and tells you which menu items just changed margin &mdash; the same afternoon, not at month end.</p>
+
+    <div class="article-cta">
+      <h3>See what yield is costing you</h3>
+      <p>Run your own numbers through the <a href="/savings.html">savings calculator</a> &mdash; it uses your purchases, your prices and your labor, with every assumption printed on screen. Or <a href="/#talk">book a demo</a> and we'll cost a recipe with you live.</p>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/culvana-lockup.svg" alt="Culvana" height="26" style="filter:brightness(0) invert(1);margin-bottom:12px">
+        <p style="font-size:13.5px;max-width:280px">Culinary nirvana for your operation. One platform, no hardware, no paper.</p>
+      </div>
+      <div><h4>Platform</h4><ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#who">Who it's for</a></li>
+        <li><a href="/savings.html">Savings calculator</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/#talk">Talk to us</a></li>
+        <li><a href="https://app.culvana.ai">Culvana Login</a></li>
+        <li><a href="https://shared.recipe-costing.net/">Recipe Costing Login</a></li>
+      </ul></div>
+      <div><h4>Payments</h4><ul>
+        <li>Powered by Elavon</li>
+        <li>A U.S. Bancorp company</li>
+        <li>Member FDIC</li>
+      </ul></div>
+    </div>
+    <div class="base">&copy; Culvana <span id="yr"></span>. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+})();
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '✕' : '☰';
+  });
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='☰'; });
+  });
+})();
+</script>
+</body>
+</html>
