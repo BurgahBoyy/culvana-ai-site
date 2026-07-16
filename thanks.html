@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thanks — we'll call you within a day | Culvana</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', saved || (sysDark ? 'dark' : 'light'));
+})();
+</script>
+<style>
+.thanks-wrap{max-width:640px;margin:0 auto;padding:150px 24px 90px;text-align:center}
+.thanks-wrap h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;margin:18px 0 12px}
+.thanks-wrap p{font-size:17px;line-height:1.7;color:var(--ink-soft)}
+.thanks-check{font-size:52px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="btn btn-p" href="/">Back to the site</a>
+    </div>
+  </div>
+</nav>
+<main>
+  <div class="thanks-wrap">
+    <div class="thanks-check">✅</div>
+    <h1>Got it. We'll call you within a day.</h1>
+    <p>No demo theatre — we'll ask what you pay now and show you the difference with your own numbers.</p>
+    <p style="margin-top:22px">While you wait, <a href="/savings.html" style="color:var(--brand);font-weight:600">run the savings calculator</a> — bring the result to the call and we'll check it against your merchant statement.</p>
+  </div>
+</main>
+</body>
+</html>

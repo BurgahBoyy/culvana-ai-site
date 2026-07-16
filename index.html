@@ -44,6 +44,21 @@
 }
 </script>
 <link rel="stylesheet" href="style.css">
+<style>
+/* Pulse for the legacy Recipe Costing Login so long-time users spot it instantly. */
+@keyframes cv-pulse{0%{box-shadow:0 0 0 0 rgba(38,112,246,.6)}70%{box-shadow:0 0 0 12px rgba(38,112,246,0)}100%{box-shadow:0 0 0 0 rgba(38,112,246,0)}}
+.pulse-login{animation:cv-pulse 1.8s infinite;border-radius:10px}
+@media (prefers-reduced-motion: reduce){.pulse-login{animation:none}}
+/* Demo form. The action posts to email today; swap the action URL for the CRM endpoint later. */
+.cv-form{margin-top:10px;text-align:left}
+.cv-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.cv-row{grid-template-columns:1fr}}
+.cv-field{display:flex;flex-direction:column;margin-bottom:12px}
+.cv-field label{font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.cv-field input,.cv-field select{padding:11px 12px;border-radius:10px;border:1px solid rgba(128,128,128,.35);background:transparent;color:var(--ink);font:inherit}
+.cv-field input:focus,.cv-field select:focus{outline:2px solid var(--brand);border-color:transparent}
+.cv-field select option{color:#0B1220;background:#fff}
+</style>
 <script>
 /* THEME. Set before first paint, from an inline script in <head>, so a dark-mode visitor never gets a white
    flash. Doing this in a deferred script is the single most common way a dark theme feels broken. */
@@ -68,12 +83,12 @@
       <a href="savings.html">What you'll save</a>
       <a href="#pricing">Pricing</a>
       <a href="https://app.culvana.ai" class="navlogin-mobile">Culvana Login</a>
-      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
+      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile pulse-login">Recipe Costing Login</a>
     </div>
     <div style="display:flex;gap:10px;align-items:center">
       <div class="nav-logins">
         <a href="https://app.culvana.ai" class="nav-login">Culvana Login</a>
-        <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
+        <a href="https://shared.recipe-costing.net/" class="nav-login pulse-login">Recipe Costing Login</a>
       </div>
       <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
       <button id="themeBtn" class="theme-btn" type="button"></button>
@@ -305,13 +320,44 @@
   </div>
 </section>
 
-<!-- LEAD FORM -->
+<!-- LEAD FORM. Posts to email today (robert@ + chris@culvana.ai via FormSubmit).
+     WHEN THE CRM IS LIVE: change the form action to the CRM endpoint and delete the hidden _fields. -->
 <section class="soft" id="talk">
   <div class="wrap" style="max-width:640px">
     <div class="eyebrow">Talk to us</div>
     <h2>Tell us about your kitchen.</h2>
     <p class="sub">We'll call you within a day. No demo theatre, we'll ask what you pay now and show you the difference.</p>
-    <div id="culvana-lead-form"></div>
+    <form action="https://formsubmit.co/robert@culvana.ai" method="POST" class="cv-form">
+      <input type="hidden" name="_subject" value="New Culvana demo request">
+      <input type="hidden" name="_cc" value="chris@culvana.ai">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://culvana.ai/thanks.html">
+      <input type="text" name="_honey" style="display:none">
+      <div class="cv-row">
+        <div class="cv-field"><label for="f-first">First name *</label><input id="f-first" name="First name" type="text" required autocomplete="given-name"></div>
+        <div class="cv-field"><label for="f-last">Last name *</label><input id="f-last" name="Last name" type="text" required autocomplete="family-name"></div>
+      </div>
+      <div class="cv-row">
+        <div class="cv-field"><label for="f-email">Email *</label><input id="f-email" name="Email" type="email" required autocomplete="email"></div>
+        <div class="cv-field"><label for="f-phone">Phone *</label><input id="f-phone" name="Phone" type="tel" required autocomplete="tel"></div>
+      </div>
+      <div class="cv-row">
+        <div class="cv-field"><label for="f-company">Company (optional)</label><input id="f-company" name="Company" type="text" autocomplete="organization"></div>
+        <div class="cv-field"><label for="f-locs">Number of locations *</label>
+          <select id="f-locs" name="Number of locations" required>
+            <option value="" disabled selected>Select…</option>
+            <option>1</option>
+            <option>2–5</option>
+            <option>6–10</option>
+            <option>11–25</option>
+            <option>26–100</option>
+            <option>100+</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-p" style="margin-top:10px">Book my demo</button>
+    </form>
   </div>
 </section>
 
@@ -409,20 +455,6 @@ document.querySelectorAll('.stat[data-to]').forEach(function(el){ so.observe(el)
   });
 })();
 </script>
-<!-- The lead form is served by the app so it's always the current one, a pasted form silently stops
-     collecting the day we add a field. -->
-<!--
-  THE FORM IS GENERATED BY THIS SCRIPT. The <div id="culvana-lead-form"> above is an empty mount, the script
-  builds the fields, wires the submit, and posts to /v1/leads. If the script 404s you get an empty div and no
-  error, which is exactly how a broken lead form goes unnoticed for a month.
-
-  LOCAL TESTING: point data-api at the API you are actually running.
-    <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script>
-
-  PRODUCTION: once app.culvana.com is live, switch back to the line below.
--->
-<!-- <script src="http://localhost:5112/embed/lead-form.js" data-mount="culvana-lead-form" data-api="http://localhost:5112"></script> -->
-<script src="https://app.culvana.com/embed/lead-form.js" data-mount="culvana-lead-form" data-api="https://app.culvana.com"></script>
 
 <script>
 (function(){
@@ -460,12 +492,12 @@ document.querySelectorAll('.stat[data-to]').forEach(function(el){ so.observe(el)
   b.addEventListener('click', function(){
     var open = l.classList.toggle('open');
     b.setAttribute('aria-expanded', open ? 'true' : 'false');
-    b.textContent = open ? '\u2715' : '\u2630';
+    b.textContent = open ? '✕' : '☰';
   });
   /* Close on navigate. A menu that stays open over the section you just jumped to is a menu that
      hides the thing you asked to see. */
   l.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='\u2630'; });
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='☰'; });
   });
 })();
 </script>
