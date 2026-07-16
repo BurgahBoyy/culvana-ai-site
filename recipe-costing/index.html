@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recipe and Menu Costing Software | Culvana</title>
+<meta name="description" content="Stop guessing the cost of your recipes. Culvana's recipe costing software builds recipes and sub-recipes, tracks yields, adds labor, flags allergens and reprices your menu as invoices land.">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Culvana">
+<meta property="og:title" content="Recipe and Menu Costing Software">
+<meta property="og:description" content="Build recipes and sub-recipes, track yields, add labor, flag allergens and reprice your menu automatically as vendor prices change.">
+<meta property="og:url" content="https://culvana.ai/recipe-costing/">
+<link rel="canonical" href="https://culvana.ai/recipe-costing/">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Culvana Recipe Costing",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "description":"Recipe and menu costing software: recipes and sub-recipes, yields, labor, allergens, scaling and real-time cost updates from invoices.",
+  "offers":{"@type":"Offer","price":"55","priceCurrency":"USD","description":"Per location per month. Waived above $20,000/mo in card volume."},
+  "publisher":{"@type":"Organization","name":"Culvana","url":"https://culvana.ai"}
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', saved || (sysDark ? 'dark' : 'light'));
+})();
+</script>
+<style>
+.article-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.article-hero{padding:120px 0 24px}
+.article-hero h1{font-size:clamp(30px,4.5vw,46px);line-height:1.13;letter-spacing:-.02em;margin:14px 0 12px}
+.article-hero .lead2{font-size:18px;line-height:1.65;color:var(--ink-soft);max-width:720px}
+.article-body{padding:16px 0 72px;font-size:17px;line-height:1.75;color:var(--ink-soft)}
+.article-body h2{font-size:26px;letter-spacing:-.01em;margin:46px 0 14px;color:var(--ink)}
+.article-body p{margin:0 0 18px}
+.article-body ul{margin:0 0 18px;padding-left:22px}
+.article-body li{margin-bottom:9px}
+.article-body a{color:var(--brand);font-weight:600;text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.feature-card{background:var(--card,rgba(128,128,128,.06));border:1px solid rgba(128,128,128,.18);border-radius:14px;padding:20px 22px}
+.feature-card h3{margin:0 0 8px;font-size:16px;color:var(--ink)}
+.feature-card p{font-size:14.5px;margin:0}
+.article-cta{background:linear-gradient(120deg,rgba(38,112,246,.10),rgba(124,58,237,.08));border:1px solid rgba(38,112,246,.25);border-radius:16px;padding:26px 28px;margin:40px 0 0}
+.article-cta h3{margin-top:0;color:var(--ink)}
+.quote{border-left:3px solid var(--brand);padding:6px 20px;margin:26px 0;font-size:18px;font-style:italic;color:var(--ink)}
+.quote small{display:block;font-style:normal;color:var(--mute);margin-top:8px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="/#how">How it works</a>
+      <a href="/#who">Who it's for</a>
+      <a href="/savings.html">What you'll save</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="https://app.culvana.ai" class="navlogin-mobile">Culvana Login</a>
+      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="nav-logins">
+        <a href="https://app.culvana.ai" class="nav-login">Culvana Login</a>
+        <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
+      </div>
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="/#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<header class="article-hero">
+  <div class="article-wrap">
+    <div class="eyebrow" style="color:#7DD3FC">Recipe &amp; menu costing</div>
+    <h1>Recipe and Menu Costing Software</h1>
+    <p class="lead2">Stop guessing what your recipes cost. Culvana — built by the team behind Recipe Costing Software — builds recipes and sub-recipes, tracks yields and labor, flags allergens, and reprices your whole menu the day a vendor price changes.</p>
+  </div>
+</header>
+
+<article class="article-body">
+  <div class="article-wrap">
+    <h2>Easily Manage Your Recipes and Costs</h2>
+    <p>Culvana's recipe costing software gives you the cost breakdown for every menu item — items, materials and labor — with a total food cost in your currency and a food cost percentage. Knowing your recipe costs is how you make the strategic decisions that reduce expenses and improve your bottom line.</p>
+    <p>Unlike a standalone costing tool, Culvana is one platform: the <a href="/#how">AI reads your invoices</a>, updates ingredient costs, moves inventory, and recalculates every affected recipe automatically. Nobody in your building does data entry.</p>
+
+    <h2>Create Recipes and Add Sub-Recipes Easily</h2>
+    <p>Build recipes and sub-recipes as deep as your menu goes — the mother dough inside the loaf inside the sandwich, costed all the way down. Every recipe shows total cost including items, materials and the labor to make it.</p>
+
+    <h2>Do You Know Your Recipe Costs?</h2>
+    <p>Scale any recipe by percentage or serving size and Culvana recalculates the cost instantly. Let the software do the math so you know the cost of a recipe at any portion size — then check what that's worth to you in the <a href="/savings.html">savings calculator</a>.</p>
+
+    <h2>Identify Costly Food Items and Materials</h2>
+    <p>Enter quantity and portion size for any ingredient and Culvana calculates cost based on the weight selected — metric or imperial, with <a href="/blog/what-is-yield-and-how-to-calculate-it/">yield applied at the supplier, ingredient and recipe level</a>. You'll see exactly which items drive the cost of each dish, so you can price the menu or rework the recipe on facts.</p>
+
+    <h2>Add Labor and Cost Out Menu Items</h2>
+    <p>Add theoretical labor to recipes to calculate menu costs accurately. Food, materials, labor and overhead stay separated for analysis, so you can zero in on true food cost without the noise.</p>
+
+    <h2>Write Up Preparations and Procedures</h2>
+    <p>Don't leave your cooks guessing. Type directions into each recipe with formatting, highlights and links to photos or videos — so every plate comes out the same, on every shift, at every location.</p>
+
+    <h2>Identify Allergens With Every Recipe</h2>
+    <p>Culvana identifies and displays allergens as recipes and menu items are created. Your kitchen knows where cross-contamination risk lives, and your menu can declare allergens so guests with food allergies can order safely.</p>
+
+    <h2>Scale Recipes by Percentage or Portions</h2>
+    <p>Cooks can scale recipes from the recipe page or the recipe report, on a phone or tablet, and every ingredient stays in proportion — accurate at any batch size, from a single plate to a banquet run.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card"><h3>POS built in</h3><p>No integration to buy — the POS is part of the platform. Every sale depletes inventory and updates food cost in real time. Switching from Square, Clover or Toast? <a href="/pos-integrations/squarepos-recipe-costing/">We make it easy</a>.</p></div>
+      <div class="feature-card"><h3>Cloud-based</h3><p>Nothing to install. Any device with a browser — PC, tablet, or the phone in your server's apron.</p></div>
+      <div class="feature-card"><h3>Multi-unit ready</h3><p>Push recipes and menu items to every location and update pricing across your network of stores.</p></div>
+      <div class="feature-card"><h3>Real-time reports</h3><p>Inventory usage, waste logs and product mixes with food costs — live, from anywhere.</p></div>
+      <div class="feature-card"><h3>AI does the typing</h3><p>Photograph an invoice and costs, stock and journal entries update themselves. Ask "where am I losing margin?" and get an answer from your own data.</p></div>
+      <div class="feature-card"><h3>User friendly</h3><p>Built by operators. Train staff in an afternoon, not a month.</p></div>
+    </div>
+
+    <div class="quote">"We loved using Recipe Costing Software because it did all the heavy lifting figuring out our margins."<small>Rick Herbst — Co-Owner/COO</small></div>
+
+    <h2>More Than Restaurants</h2>
+    <p>Recipe costing is the same problem wherever food is costed, counted and sold: <a href="/catering-management-software/">catering businesses</a>, meal delivery and prep companies, franchises, bars and clubs, universities, breweries, bakeries, hotels and more. One engine, configured for how you operate.</p>
+
+    <div class="article-cta">
+      <h3>See your recipe costs this week, not next month</h3>
+      <p>Run your numbers through the <a href="/savings.html">savings calculator</a> — your purchases, your prices, every assumption on screen. Or <a href="/#talk">book a demo</a> and we'll cost one of your actual recipes live.</p>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/culvana-lockup.svg" alt="Culvana" height="26" style="filter:brightness(0) invert(1);margin-bottom:12px">
+        <p style="font-size:13.5px;max-width:280px">Culinary nirvana for your operation. One platform, no hardware, no paper.</p>
+      </div>
+      <div><h4>Platform</h4><ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#who">Who it's for</a></li>
+        <li><a href="/savings.html">Savings calculator</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/#talk">Talk to us</a></li>
+        <li><a href="https://app.culvana.ai">Culvana Login</a></li>
+        <li><a href="https://shared.recipe-costing.net/">Recipe Costing Login</a></li>
+      </ul></div>
+      <div><h4>Payments</h4><ul>
+        <li>Powered by Elavon</li>
+        <li>A U.S. Bancorp company</li>
+        <li>Member FDIC</li>
+      </ul></div>
+    </div>
+    <div class="base">&copy; Culvana <span id="yr"></span>. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+})();
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '✕' : '☰';
+  });
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='☰'; });
+  });
+})();
+</script>
+</body>
+</html>
