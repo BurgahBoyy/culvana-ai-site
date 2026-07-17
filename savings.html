@@ -173,12 +173,12 @@
       <a href="index.html#who">Who it's for</a>
       <a href="savings.html" style="color:var(--brand);font-weight:600">What you'll save</a>
       <a href="index.html#pricing">Pricing</a>
-      <a href="https://app.culvana.ai" class="navlogin-mobile">Culvana Login</a>
+      <a href="/launch.html" class="navlogin-mobile">Culvana Login</a>
       <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
     </div>
     <div style="display:flex;gap:10px;align-items:center">
       <div class="nav-logins">
-        <a href="https://app.culvana.ai" class="nav-login">Culvana Login</a>
+        <a href="/launch.html" class="nav-login">Culvana Login</a>
         <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
       </div>
       <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
@@ -262,7 +262,7 @@
           <input type="range" id="vol_s" min="0" max="200000" step="500" value="60000" tabindex="-1">
           <div class="numbox"><input id="vol" type="number" min="0" step="500" value="60000"></div>
         </div>
-        <div class="hint">The number on your merchant statement. It's the single biggest lever here, above $20,000 your platform fee goes to zero.</div>
+        <div class="hint">The number on your merchant statement. It's the single biggest lever here: our 2.5% + $0.10 is the lowest rate and per-swipe fee of any platform we replace.</div>
       </div>
 
       <div style="font-size:12px;color:var(--mute);margin:2px 0 4px;line-height:1.5">
@@ -372,11 +372,11 @@
     in $6 coffees pays it ten times more often than a steakhouse doing $60,000 in $90 dinners. Most operators pay
     15 to 20 cents a swipe today. We charge 10. On the numbers above that alone is a real line, and we show it
     separately rather than burying it inside one "processing" figure.<br><br>
-    <b>Platform fee:</b> $55 per location per month, waived entirely above $20,000 of monthly card volume per
-    location. Below that it stands, we'd rather show you the line than move it later.<br><br>
-    <b>AI usage:</b> billed as you go, roughly $0.30 per invoice read plus a few dollars of questions. We've
-    estimated it from your invoice count and we <em>charge</em> for it, it isn't free, and a calculator that
-    pretended otherwise would be lying to you on the first page.<br><br>
+    <b>Platform fee:</b> $199 per location per month for Culvana Professional. Everything is included, no
+    tiers and no per-seat fees, and every subscription includes 2,000 Culvana AI Credits a month.<br><br>
+    <b>AI usage:</b> your 2,000 monthly credits cover it for most operators. An invoice read is 2 credits and a
+    question is 1, so we estimate your usage from the invoice count you entered. If you ever run over, credit
+    packs start at $25 for 500, and that overage is what this line shows. For most operators it is zero.<br><br>
     <b>Labour:</b> 4 minutes to key one invoice by hand, at the wage you entered. If your bookkeeper is faster
     than that, lower it. We didn't count the time spent chasing a price change nobody noticed, because we can't
     measure it, but you know it's real.<br><br>
@@ -608,9 +608,9 @@ function calc(){
 
   // ---- what they'd pay us
   var culvProc = vol * 0.025 + txns * 0.10;   // 2.5% + 10c, on the SAME transaction count
-  var waived   = vol >= 20000;
-  var culvPlat = waived ? 0 : 55;
-  var culvAi   = inv * 0.30 + 6;              // invoices read + a few questions
+  var culvPlat = 199;                          // Culvana Professional, per location
+  var creditsUsed = inv * 2 + 60;              // invoice reads at 2 credits each, plus everyday questions
+  var culvAi   = Math.max(0, creditsUsed - 2000) * 0.05;   // 2,000 credits included; overage at pack rate
   var culvTotal = culvProc + culvPlat + culvAi;
 
   var savePer = payNowTotal - culvTotal;      // THE BILLS. Certain.
@@ -655,7 +655,7 @@ function calc(){
     ['Per-swipe fee<div style="font-size:11px;color:var(--r-mute);font-weight:400">'
       + Math.round(txns).toLocaleString('en-US') + ' transactions a month</div>', txns * pertxn, txns * 0.10],
     ['Software you pay for today',                 payNowSoft,     culvPlat],
-    ['AI (invoices, answers)',                     0,              culvAi],
+    ['AI credits over the 2,000 included',         0,              culvAi],
     ['Typing invoices in',                         payNowLabor,    0],
     ['Paper, printing, filing',                    payNowPaper,    0]
   ];
@@ -679,9 +679,7 @@ function calc(){
         + '<div style="color:var(--r-ink2);font-weight:700;font-size:15px">' + usd(softSaved) + '</div>'
         + '<div style="color:var(--r-mute)">work and margin, estimated</div></div>'
     + '</div>'
-    + (waived
-        ? '<div style="font-size:12.5px;color:var(--r-chip1-ink);margin-bottom:16px">Your platform fee is $0, you clear the $20,000 floor.</div>'
-        : '<div style="font-size:12.5px;color:var(--r-amber);margin-bottom:16px">Below $20,000/mo of card volume, so the $55 platform fee applies.</div>')
+    + '<div style="font-size:12.5px;color:var(--r-chip1-ink);margin-bottom:16px">Includes 2,000 Culvana AI Credits a month. On your invoice count we estimate you\'d use about ' + Math.round(creditsUsed).toLocaleString('en-US') + '.</div>'
     + '<table><thead><tr>'
       + '<th></th>'
       + '<th class="num" style="text-align:right;color:var(--r-mute)">Now' + (locs > 1 ? '<div style="font-size:9.5px;font-weight:500">per location</div>' : '') + '</th>'
