@@ -700,13 +700,13 @@ function calc(){
     var culvAll = r[2] * locs;                   // WHAT THEY WOULD ACTUALLY PAY US. The number they sign.
     var delta   = culvAll - nowAll;              // negative = saving, positive = it costs more
     html += '<tr><td>' + r[0] + '</td>'
-          + '<td class="num" style="text-align:right">' + (r[1] > 0 ? usd(r[1]) : '\u2014') + '</td>'
-          + '<td class="num" style="text-align:right;color:' + (r[2] < r[1] ? 'var(--r-save)' : 'var(--r-ink)') + '">' + (r[2] > 0 ? usd(r[2]) : '\u2014') + '</td>'
+          + '<td class="num" style="text-align:right">' + usd(r[1]) + '</td>'
+          + '<td class="num" style="text-align:right;color:' + (r[2] < r[1] ? 'var(--r-save)' : 'var(--r-ink)') + '">' + usd(r[2]) + '</td>'
           + (locs > 1
-              ? '<td class="num" style="text-align:right;color:var(--r-sub)">' + (nowAll > 0 ? usd(nowAll) : '\u2014') + '</td>'
-                + '<td class="num" style="text-align:right;font-weight:600;color:var(--r-ink)">' + (culvAll > 0 ? usd(culvAll) : '\u2014') + '</td>'
+              ? '<td class="num" style="text-align:right;color:var(--r-sub)">' + usd(nowAll) + '</td>'
+                + '<td class="num" style="text-align:right;font-weight:600;color:var(--r-ink)">' + usd(culvAll) + '</td>'
                 + '<td class="num" style="text-align:right;font-weight:700;color:' + (delta < 0 ? 'var(--r-save)' : delta > 0 ? 'var(--r-cost)' : 'var(--r-mute)') + '">'
-                  + (delta === 0 ? '\u2014' : (delta < 0 ? '\u2212' : '+') + usd(Math.abs(delta)))
+                  + (delta === 0 ? '$0' : (delta < 0 ? '' : '+') + usd(Math.abs(delta)))
                 + '</td>'
               : '')
           + '</tr>';
@@ -718,7 +718,7 @@ function calc(){
         + (locs > 1
             ? '<td class="num" style="text-align:right;color:var(--r-sub)">' + usd(payNowTotal * locs) + '</td>'
               + '<td class="num" style="text-align:right;color:var(--r-ink);font-weight:800">' + usd(culvTotal * locs) + '</td>'
-              + '<td class="num" style="text-align:right;color:var(--r-save);font-weight:800">\u2212' + usd(saveAll) + '</td>'
+              + '<td class="num" style="text-align:right;color:var(--r-save);font-weight:800">' + usd(saveAll) + '</td>'
             : '')
         + '</tr>';
 
