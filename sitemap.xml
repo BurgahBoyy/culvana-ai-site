@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      <url><loc>https://culvana.ai/</loc><priority>1.0</priority></url>
-      <url><loc>https://culvana.ai/savings.html</loc><priority>0.9</priority></url>
-      <url><loc>https://culvana.ai/recipe-costing/</loc><priority>0.9</priority></url>
-      <url><loc>https://culvana.ai/catering-management-software/</loc><priority>0.8</priority></url>
-      <url><loc>https://culvana.ai/pos-integrations/squarepos-recipe-costing/</loc><priority>0.8</priority></url>
-      <url><loc>https://culvana.ai/blog/what-is-yield-and-how-to-calculate-it/</loc><priority>0.8</priority></url>
+  <url><loc>https://culvana.ai/</loc><priority>1.0</priority></url>
+  <url><loc>https://culvana.ai/savings.html</loc><priority>0.9</priority></url>
+  <url><loc>https://culvana.ai/recipe-costing/</loc><priority>0.9</priority></url>
+  <url><loc>https://culvana.ai/catering-management-software/</loc><priority>0.8</priority></url>
+  <url><loc>https://culvana.ai/pos-integrations/squarepos-recipe-costing/</loc><priority>0.7</priority></url>
+  <url><loc>https://culvana.ai/blog/what-is-yield-and-how-to-calculate-it/</loc><priority>0.8</priority></url>
+  <url><loc>https://culvana.ai/recipe-costing-software-is-now-culvana/</loc><priority>0.8</priority></url>
 </urlset>

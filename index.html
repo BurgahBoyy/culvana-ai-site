@@ -58,6 +58,16 @@
 .cv-field input,.cv-field select{padding:11px 12px;border-radius:10px;border:1px solid rgba(128,128,128,.35);background:transparent;color:var(--ink);font:inherit}
 .cv-field input:focus,.cv-field select:focus{outline:2px solid var(--brand);border-color:transparent}
 .cv-field select option{color:#0B1220;background:#fff}
+
+.continuity{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:13px 24px;margin:0;text-decoration:none;font-size:14.5px;line-height:1.5;
+  background:linear-gradient(90deg,rgba(38,112,246,.14),rgba(124,58,237,.12));
+  border-bottom:1px solid rgba(38,112,246,.25);color:var(--ink);text-align:center}
+.continuity:hover{background:linear-gradient(90deg,rgba(38,112,246,.22),rgba(124,58,237,.18))}
+.continuity strong{font-weight:700}
+.continuity-badge{flex:none;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:4px 9px;border-radius:99px;background:var(--brand);color:#fff}
+@media (max-width:640px){.continuity{font-size:13px;padding:11px 16px}}
 </style>
 <script>
 /* THEME. Set before first paint, from an inline script in <head>, so a dark-mode visitor never gets a white
@@ -96,6 +106,13 @@
     </div>
   </div>
 </nav>
+
+<!-- CONTINUITY BAND. Recipe-costing.com 301s land here. A ten-year customer or a PFG contact needs to know
+     in one line that they are in the right place and nothing was sold, shut down or taken away. -->
+<a href="/recipe-costing-software-is-now-culvana/" class="continuity">
+  <span class="continuity-badge">Same team</span>
+  <span><strong>Recipe Costing Software is now Culvana.</strong> Your login still works and recipe costing is still at the core. See what changed &rarr;</span>
+</a>
 
 <main id="main">
 <header class="hero">
