@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recipe Costing Software is now Culvana | What changed and what didn't</title>
+<meta name="description" content="Recipe Costing Software is now Culvana. Same company, same team, same recipe costing at the core, with the rest of the restaurant added around it. Your login still works.">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Culvana">
+<meta property="og:title" content="Recipe Costing Software is now Culvana">
+<meta property="og:description" content="Same company, same team, same recipe costing at the core. Here is exactly what changed and what didn't.">
+<meta property="og:url" content="https://culvana.ai/recipe-costing-software-is-now-culvana/">
+<link rel="canonical" href="https://culvana.ai/recipe-costing-software-is-now-culvana/">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What happened to Recipe Costing Software?","acceptedAnswer":{"@type":"Answer","text":"Nothing was sold or shut down. Recipe Costing Software was rebuilt and renamed Culvana by the same company and the same team. Recipe costing is still at the core of the product."}},
+    {"@type":"Question","name":"Does my Recipe Costing login still work?","acceptedAnswer":{"@type":"Answer","text":"Yes. Existing customers sign in at shared.recipe-costing.net exactly as before. Nothing about your account, recipes or data changed."}},
+    {"@type":"Question","name":"Is recipe costing still part of the product?","acceptedAnswer":{"@type":"Answer","text":"Yes. Recipes, sub-recipes, yields, labor, allergens and scaling are all still there. Culvana adds POS, inventory, purchasing, books and payments around them."}},
+    {"@type":"Question","name":"Do I have to move to Culvana?","acceptedAnswer":{"@type":"Answer","text":"No. Existing Recipe Costing Software customers can keep using the platform they have. When you want to move, we move your recipes and data for you."}}
+  ]
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', saved || (sysDark ? 'dark' : 'light'));
+})();
+</script>
+<style>
+.article-wrap{max-width:800px;margin:0 auto;padding:0 24px}
+.article-hero{padding:120px 0 20px}
+.article-hero h1{font-size:clamp(30px,4.6vw,48px);line-height:1.12;letter-spacing:-.02em;margin:14px 0 14px}
+.article-hero .lead2{font-size:19px;line-height:1.65;color:var(--ink-soft);max-width:680px}
+.article-body{padding:12px 0 72px;font-size:17px;line-height:1.75;color:var(--ink-soft)}
+.article-body h2{font-size:26px;letter-spacing:-.01em;margin:44px 0 14px;color:var(--ink)}
+.article-body p{margin:0 0 18px}
+.article-body ul{margin:0 0 18px;padding-left:22px}
+.article-body li{margin-bottom:9px}
+.article-body a{color:var(--brand);font-weight:600;text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:26px 0}
+.panel{border-radius:14px;padding:20px 22px;border:1px solid rgba(128,128,128,.2);background:rgba(128,128,128,.06)}
+.panel h3{margin:0 0 10px;font-size:16px;color:var(--ink)}
+.panel ul{margin:0;padding-left:20px;font-size:15px}
+.panel.keep{border-color:rgba(5,150,105,.35);background:rgba(5,150,105,.08)}
+.panel.new{border-color:rgba(38,112,246,.35);background:rgba(38,112,246,.08)}
+.article-cta{background:linear-gradient(120deg,rgba(38,112,246,.10),rgba(124,58,237,.08));border:1px solid rgba(38,112,246,.25);border-radius:16px;padding:26px 28px;margin:40px 0 0}
+.article-cta h3{margin-top:0;color:var(--ink)}
+.faq{margin-top:12px}
+.faq h3{font-size:17px;color:var(--ink);margin:26px 0 6px}
+.stamp{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7DD3FC}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="/#how">How it works</a>
+      <a href="/#who">Who it's for</a>
+      <a href="/savings.html">What you'll save</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/launch.html" class="navlogin-mobile">Culvana Login</a>
+      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="nav-logins">
+        <a href="/launch.html" class="nav-login">Culvana Login</a>
+        <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
+      </div>
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="/#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<header class="article-hero">
+  <div class="article-wrap">
+    <div class="stamp">A note to our customers and partners</div>
+    <h1>Recipe Costing Software is now Culvana.</h1>
+    <p class="lead2">Nobody bought us. Nothing was shut down. Same company, same team, same phone number, and recipe costing is still the engine underneath. We built the rest of the restaurant around it and gave it a name that fits.</p>
+  </div>
+</header>
+
+<article class="article-body">
+  <div class="article-wrap">
+    <h2>The short version</h2>
+    <p>For over a decade, Recipe Costing Software did one thing extremely well: it told operators what their food actually cost. Customers kept asking the same follow-up question. If you already know what every plate costs, why am I still running a separate POS, a separate inventory app, a separate ordering system and a bookkeeper who types the same invoices in again?</p>
+    <p>Culvana is the answer to that question. It is the same costing engine our customers have relied on for years, with the point of sale, inventory, purchasing, books and payments built around it, and AI doing the data entry that used to eat somebody's evening.</p>
+
+    <div class="twocol">
+      <div class="panel keep">
+        <h3>What did not change</h3>
+        <ul>
+          <li>The company. Same ownership, same team, same people you already call.</li>
+          <li>Your login. Existing customers sign in exactly where they always have.</li>
+          <li>Your data. Recipes, sub-recipes, vendors and history are untouched.</li>
+          <li>Recipe costing itself. Yields, labor, allergens and scaling all still there.</li>
+          <li>Support. Same humans, same number: <a href="tel:+13059827075">305-982-7075</a>.</li>
+        </ul>
+      </div>
+      <div class="panel new">
+        <h3>What is new in Culvana</h3>
+        <ul>
+          <li>AI reads your invoices, so nobody types them in.</li>
+          <li>Point of sale included, no terminal to buy.</li>
+          <li>Real-time inventory that depletes on every sale.</li>
+          <li>Purchasing and par-level ordering.</li>
+          <li>The books, so food cost and P&amp;L live in one system.</li>
+          <li>Payments at 2.5% + $0.10 a transaction if you want them.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>If you are an existing Recipe Costing customer</h2>
+    <p>Keep working. Nothing is being taken away from you and there is no deadline hanging over your head. Sign in at the <a href="https://shared.recipe-costing.net/">Recipe Costing login</a> the way you always have. When you are ready to see what the full platform does, call us and we will walk you through it with your own recipes on the screen. When you decide to move, we move your data for you. You will not rebuild anything.</p>
+
+    <h2>If you are a partner, distributor or vendor</h2>
+    <p>Your contacts, contracts and integrations are with the same company they have always been with. Kitchen Porter Tech LLC still stands behind both products. Recipe Costing Software continues to run for the customers on it, and Culvana is where new work goes. If you have an integration pointed at the old platform, it keeps working, and we will coordinate directly with your team before anything about it changes.</p>
+
+    <h2>Why the new name</h2>
+    <p>"Recipe Costing Software" described exactly one feature. It was honest and it served us well, and it is also the reason people were surprised to learn we did inventory, ordering and POS too. A name that describes a single report makes a platform look like a calculator. Culvana is culinary nirvana for your operation, and it leaves room for everything the product actually does now.</p>
+
+    <h2>Common questions</h2>
+    <div class="faq">
+      <h3>Was Recipe Costing Software acquired?</h3>
+      <p>No. This was not a sale, a merger or a takeover. Same company, same owners, new name and a much bigger product.</p>
+
+      <h3>Does my login still work?</h3>
+      <p>Yes. <a href="https://shared.recipe-costing.net/">Sign in here</a>, same credentials as always.</p>
+
+      <h3>Is recipe costing going away?</h3>
+      <p>No, it is the core of Culvana. <a href="/recipe-costing/">Everything it did, it still does</a>, and now the costs update themselves as invoices land.</p>
+
+      <h3>Do I have to switch, and does my price change?</h3>
+      <p>You do not have to switch. If and when you move to Culvana, the platform is $199 per location per month with 2,000 AI credits included, or you can <a href="/savings.html">run your own numbers</a> against what you pay today before deciding anything.</p>
+
+      <h3>What happened to recipe-costing.com?</h3>
+      <p>It points here. Ten years of articles and guides came with it, including the <a href="/blog/what-is-yield-and-how-to-calculate-it/">yield guide</a> people still search for every week.</p>
+    </div>
+
+    <div class="article-cta">
+      <h3>Still have a question? Ask a human.</h3>
+      <p>Call <a href="tel:+13059827075">305-982-7075</a> and you will get someone who knows your account, or <a href="/#talk">book a demo</a> and we will cost one of your real recipes live. No demo theatre.</p>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/culvana-lockup.svg" alt="Culvana" height="26" style="filter:brightness(0) invert(1);margin-bottom:12px">
+        <p style="font-size:13.5px;max-width:280px">Culinary nirvana for your operation. One platform, no hardware, no paper.</p>
+      </div>
+      <div><h4>Platform</h4><ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#who">Who it's for</a></li>
+        <li><a href="/savings.html">Savings calculator</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/#talk">Talk to us</a></li>
+        <li><a href="tel:+13059827075">1-305-982-7075</a></li>
+        <li><a href="/launch.html">Culvana Login</a></li>
+        <li><a href="https://shared.recipe-costing.net/">Recipe Costing Login</a></li>
+      </ul></div>
+      <div><h4>Payments</h4><ul>
+        <li>Powered by Elavon</li>
+        <li>A U.S. Bancorp company</li>
+        <li>Member FDIC</li>
+      </ul></div>
+    </div>
+    <div class="base">&copy; Culvana <span id="yr"></span>. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+})();
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '✕' : '☰';
+  });
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='☰'; });
+  });
+})();
+</script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/62b45cfc7b967b1179962215/1g688mf39';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>
