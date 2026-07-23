@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page Not Found | Culvana</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', saved || (sysDark ? 'dark' : 'light'));
+})();
+</script>
+<style>
+.nf-wrap{max-width:760px;margin:0 auto;padding:150px 24px 90px;text-align:center}
+.nf-wrap h1{font-size:clamp(30px,4.5vw,46px);letter-spacing:-.02em;margin:14px 0 12px}
+.nf-wrap p{font-size:17px;line-height:1.7;color:var(--ink-soft)}
+.nf-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:34px;text-align:left}
+.nf-card{background:var(--card,rgba(128,128,128,.06));border:1px solid rgba(128,128,128,.22);border-radius:14px;padding:18px 20px;text-decoration:none}
+.nf-card h3{margin:0 0 6px;font-size:15.5px;color:var(--brand)}
+.nf-card p{margin:0;font-size:13.5px;color:var(--mute)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="/#how">How it works</a>
+      <a href="/#who">Who it's for</a>
+      <a href="/savings.html">What you'll save</a>
+      <a href="/pricing/">Pricing</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="/#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="nf-wrap">
+  <div class="eyebrow" style="color:#7DD3FC">404</div>
+  <h1>That page moved, or never existed.</h1>
+  <p>We recently moved from recipe-costing.com to culvana.ai, so a few old bookmarks land here. The good stuff is one click away.</p>
+  <div class="nf-links">
+    <a class="nf-card" href="/recipe-costing/"><h3>Recipe costing software</h3><p>The engine underneath everything we make.</p></a>
+    <a class="nf-card" href="/food-cost-calculator/"><h3>Free food cost calculator</h3><p>Cost a dish and price it in seconds.</p></a>
+    <a class="nf-card" href="/pricing/"><h3>Pricing</h3><p>$199 a location. Everything included.</p></a>
+    <a class="nf-card" href="/#talk"><h3>Talk to us</h3><p>Call 305-982-7075 or book a demo.</p></a>
+  </div>
+</div>
+</main>
+
+<script>
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+})();
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '✕' : '☰';
+  });
+})();
+</script>
+</body>
+</html>

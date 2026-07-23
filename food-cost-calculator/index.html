@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Food Cost Calculator for Restaurants | Culvana</title>
+<meta name="description" content="Cost a recipe, get cost per portion, and find your food cost percentage in seconds. Free, no signup. Then see what happens when the math updates itself.">
+<link rel="icon" href="/culvana-mark.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Culvana">
+<meta property="og:title" content="Free Food Cost Calculator for Restaurants">
+<meta property="og:description" content="Cost a recipe, get cost per portion, and find your food cost percentage in seconds. Free, no signup.">
+<meta property="og:url" content="https://culvana.ai/food-cost-calculator/">
+<link rel="canonical" href="https://culvana.ai/food-cost-calculator/">
+<meta name="theme-color" content="#2670F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080D16" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Culvana Free Food Cost Calculator",
+  "url":"https://culvana.ai/food-cost-calculator/",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "description":"Free food cost calculator for restaurants: cost a recipe ingredient by ingredient with yields, get cost per portion, a suggested menu price at your target food cost, and your food cost percentage.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "publisher":{"@type":"Organization","name":"Culvana","url":"https://culvana.ai"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://culvana.ai/"},
+    {"@type":"ListItem","position":2,"name":"Recipe Costing","item":"https://culvana.ai/recipe-costing/"},
+    {"@type":"ListItem","position":3,"name":"Free Food Cost Calculator","item":"https://culvana.ai/food-cost-calculator/"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is the food cost formula?","acceptedAnswer":{"@type":"Answer","text":"Per plate: food cost percentage = portion cost divided by menu price, times 100. For a period: food cost percentage = (beginning inventory + purchases - ending inventory) divided by food sales, times 100."}},
+    {"@type":"Question","name":"What is a good food cost percentage?","acceptedAnswer":{"@type":"Answer","text":"There is no single right number. Many full-service operators use 28 to 35 percent as a working target, and concepts with low labor or high volume often run leaner. Treat any benchmark as a starting point; your rent, labor and concept decide what your menu can carry."}},
+    {"@type":"Question","name":"How do I account for yield or trim waste?","acceptedAnswer":{"@type":"Answer","text":"Divide the as-purchased cost by the yield percentage. If onions cost $1.20 per pound and you keep 88 percent after peeling and trim, your usable cost is $1.20 / 0.88 = $1.36 per pound. This calculator has a yield field on every ingredient row."}},
+    {"@type":"Question","name":"Why does my food cost change when my menu did not?","acceptedAnswer":{"@type":"Answer","text":"Because ingredient prices moved. Vendor invoices reprice items week to week, and every affected recipe silently gains or loses margin. That is why a calculator is a snapshot; keeping costs current takes a system that reads invoices as they arrive."}},
+    {"@type":"Question","name":"Is this calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No signup, no email gate. It runs in your browser and nothing you type is sent or stored anywhere."}}
+  ]
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<script>
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('cv-theme'); } catch(e){}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', saved || (sysDark ? 'dark' : 'light'));
+})();
+</script>
+<style>
+.article-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.article-hero{padding:120px 0 24px}
+.article-hero h1{font-size:clamp(30px,4.5vw,46px);line-height:1.13;letter-spacing:-.02em;margin:14px 0 12px}
+.article-hero .lead2{font-size:18px;line-height:1.65;color:var(--ink-soft);max-width:720px}
+.article-body{padding:16px 0 72px;font-size:17px;line-height:1.75;color:var(--ink-soft)}
+.article-body h2{font-size:26px;letter-spacing:-.01em;margin:46px 0 14px;color:var(--ink)}
+.article-body h3{font-size:19px;margin:30px 0 10px;color:var(--ink)}
+.article-body p{margin:0 0 18px}
+.article-body ul{margin:0 0 18px;padding-left:22px}
+.article-body li{margin-bottom:9px}
+.article-body a{color:var(--brand);font-weight:600;text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.article-cta{background:linear-gradient(120deg,rgba(38,112,246,.10),rgba(124,58,237,.08));border:1px solid rgba(38,112,246,.25);border-radius:16px;padding:26px 28px;margin:40px 0 0}
+.article-cta h3{margin-top:0;color:var(--ink)}
+/* calculator */
+.calcbox{background:var(--card,rgba(128,128,128,.06));border:1px solid rgba(128,128,128,.22);border-radius:18px;padding:22px;margin:26px 0}
+.calcbox h2{margin:0 0 4px;font-size:21px;color:var(--ink)}
+.calcbox .sub2{font-size:14.5px;color:var(--mute);margin:0 0 18px}
+.ingtable{width:100%;border-collapse:collapse;font-size:14.5px}
+.ingtable th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:0 8px 8px 0;font-weight:600}
+.ingtable td{padding:0 8px 10px 0;vertical-align:middle}
+.ingtable input{width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(128,128,128,.35);border-radius:9px;padding:9px 10px;font:inherit;font-size:14.5px;color:var(--ink)}
+.ingtable input:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+.ingtable .linecost{white-space:nowrap;font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.rowdel{background:none;border:none;color:var(--mute);font-size:17px;cursor:pointer;padding:4px 6px;border-radius:7px;line-height:1}
+.rowdel:hover{color:#EF4444;background:rgba(239,68,68,.10)}
+.addrow{background:none;border:1px dashed rgba(128,128,128,.45);border-radius:10px;color:var(--brand);font:inherit;font-size:14px;font-weight:600;padding:9px 14px;cursor:pointer;margin-top:4px}
+.addrow:hover{border-color:var(--brand)}
+.calcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:18px}
+.calcfield label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:6px}
+.calcfield input{width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(128,128,128,.35);border-radius:9px;padding:10px 11px;font:inherit;font-size:15px;color:var(--ink)}
+.calcfield input:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:20px}
+.res{background:rgba(38,112,246,.07);border:1px solid rgba(38,112,246,.22);border-radius:13px;padding:14px 16px}
+.res .rl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.res .rv2{font-size:26px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:4px}
+.res.good{background:rgba(5,150,105,.08);border-color:rgba(5,150,105,.30)}
+.res .rn{font-size:12.5px;color:var(--mute);margin-top:3px}
+.modewrap{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.modebtn{border:1px solid rgba(128,128,128,.35);background:transparent;border-radius:999px;padding:8px 16px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.modebtn[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.formula{background:var(--card,rgba(128,128,128,.06));border-left:3px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 18px;margin:18px 0;font-size:16px;color:var(--ink);font-weight:600}
+@media (max-width:640px){
+  .ingtable th:nth-child(4),.ingtable td:nth-child(4){display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap">
+    <a href="/"><img src="/culvana-lockup.svg" alt="Culvana" height="26" class="logo-img"></a>
+    <div class="links" id="navlinks">
+      <a href="/#how">How it works</a>
+      <a href="/#who">Who it's for</a>
+      <a href="/savings.html">What you'll save</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/launch.html" class="navlogin-mobile">Culvana Login</a>
+      <a href="https://shared.recipe-costing.net/" class="navlogin-mobile">Recipe Costing Login</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="nav-logins">
+        <a href="/launch.html" class="nav-login">Culvana Login</a>
+        <a href="https://shared.recipe-costing.net/" class="nav-login">Recipe Costing Login</a>
+      </div>
+      <button id="burger" class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">☰</button>
+      <button id="themeBtn" class="theme-btn" type="button"></button>
+      <a class="btn btn-p" href="/#talk">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<header class="article-hero">
+  <div class="article-wrap">
+    <div class="eyebrow" style="color:#7DD3FC">Free tool</div>
+    <h1>Free Food Cost Calculator</h1>
+    <p class="lead2">Cost a recipe ingredient by ingredient, get your cost per portion, a suggested menu price at your target, and your food cost percentage. No signup, nothing leaves your browser. Built by the team behind <a href="/recipe-costing/" style="color:var(--brand);text-decoration:none;font-weight:600">Recipe Costing Software</a>.</p>
+  </div>
+</header>
+
+<article class="article-body">
+  <div class="article-wrap">
+
+    <section class="calcbox" aria-labelledby="rc-h">
+      <h2 id="rc-h">1. Recipe cost calculator</h2>
+      <p class="sub2">Enter what you pay and what you use. The yield column covers trim and shrink: if you only keep 88% of an onion after peeling, put 88 and the calculator prices what you actually serve. Sample burger is loaded so you can see it work; overwrite it with your own recipe.</p>
+      <table class="ingtable" id="ingTable">
+        <thead>
+          <tr><th scope="col">Ingredient</th><th scope="col">Cost per unit ($)</th><th scope="col">Qty used</th><th scope="col">Yield %</th><th scope="col" style="text-align:right">Cost</th><th scope="col"><span class="sr-only" style="position:absolute;left:-9999px">Remove</span></th></tr>
+        </thead>
+        <tbody id="ingBody"></tbody>
+      </table>
+      <button type="button" class="addrow" id="addRow">+ Add ingredient</button>
+      <div class="calcgrid">
+        <div class="calcfield"><label for="servings">Portions this makes</label><input id="servings" type="number" inputmode="decimal" min="0" step="any" value="1"></div>
+        <div class="calcfield"><label for="targetPct">Target food cost %</label><input id="targetPct" type="number" inputmode="decimal" min="0" max="100" step="any" value="30"></div>
+        <div class="calcfield"><label for="menuPrice">Menu price ($, optional)</label><input id="menuPrice" type="number" inputmode="decimal" min="0" step="any" value="11.95"></div>
+      </div>
+      <div class="results" aria-live="polite">
+        <div class="res"><div class="rl">Recipe cost</div><div class="rv2" id="outTotal">$0.00</div></div>
+        <div class="res"><div class="rl">Cost per portion</div><div class="rv2" id="outPortion">$0.00</div></div>
+        <div class="res good"><div class="rl">Price at target</div><div class="rv2" id="outSuggest">$0.00</div><div class="rn" id="outSuggestNote"></div></div>
+        <div class="res"><div class="rl">Food cost % at your price</div><div class="rv2" id="outPct">0%</div><div class="rn" id="outPctNote"></div></div>
+      </div>
+    </section>
+
+    <section class="calcbox" aria-labelledby="fp-h">
+      <h2 id="fp-h">2. Food cost percentage calculator</h2>
+      <p class="sub2">Two ways to run it: one plate, or a whole period from your inventory counts.</p>
+      <div class="modewrap" role="group" aria-label="Calculator mode">
+        <button type="button" class="modebtn" id="modePlate" aria-pressed="true">Per plate</button>
+        <button type="button" class="modebtn" id="modePeriod" aria-pressed="false">Per period</button>
+      </div>
+      <div id="platePane">
+        <div class="calcgrid">
+          <div class="calcfield"><label for="pPortion">Portion cost ($)</label><input id="pPortion" type="number" inputmode="decimal" min="0" step="any" value="3.09"></div>
+          <div class="calcfield"><label for="pPrice">Menu price ($)</label><input id="pPrice" type="number" inputmode="decimal" min="0" step="any" value="11.95"></div>
+        </div>
+      </div>
+      <div id="periodPane" hidden>
+        <div class="calcgrid">
+          <div class="calcfield"><label for="bInv">Beginning inventory ($)</label><input id="bInv" type="number" inputmode="decimal" min="0" step="any" value="8200"></div>
+          <div class="calcfield"><label for="purch">Purchases ($)</label><input id="purch" type="number" inputmode="decimal" min="0" step="any" value="11400"></div>
+          <div class="calcfield"><label for="eInv">Ending inventory ($)</label><input id="eInv" type="number" inputmode="decimal" min="0" step="any" value="7600"></div>
+          <div class="calcfield"><label for="sales">Food sales ($)</label><input id="sales" type="number" inputmode="decimal" min="0" step="any" value="40000"></div>
+        </div>
+      </div>
+      <div class="results" aria-live="polite">
+        <div class="res"><div class="rl" id="fcLabel">Food cost %</div><div class="rv2" id="outFc">0%</div><div class="rn" id="outFcNote"></div></div>
+        <div class="res" id="usageBox" hidden><div class="rl">Cost of goods used</div><div class="rv2" id="outUsage">$0.00</div></div>
+      </div>
+    </section>
+
+    <h2>The food cost formulas this runs</h2>
+    <div class="formula">Food cost % (per plate) = portion cost ÷ menu price × 100</div>
+    <div class="formula">Food cost % (per period) = (beginning inventory + purchases − ending inventory) ÷ food sales × 100</div>
+    <div class="formula">Suggested menu price = portion cost ÷ target food cost %</div>
+
+    <h2>A worked example, all the way through</h2>
+    <p>Take the burger loaded in the calculator above. The beef is $4.20 a pound and the patty uses 0.45 lb, so $1.89. Bun $0.45, two slices of cheese at $0.175 each is $0.35, produce and pickle $0.30, sauce $0.10. Total plate cost: <strong>$3.09</strong>.</p>
+    <p>On the menu at $11.95, food cost is 3.09 ÷ 11.95 = <strong>25.9%</strong>. If you were pricing it fresh against a 30% target, the math says 3.09 ÷ 0.30 = <strong>$10.30</strong>, which on a real menu becomes $10.95 or $11. The calculator gives you the floor; the menu decides the final number.</p>
+    <p>One step most spreadsheets skip: yield. If onions are $1.20 a pound as purchased and you keep 88% after peeling and trim, the pound you serve really costs 1.20 ÷ 0.88 = <strong>$1.36</strong>. Cost recipes on what you serve, not what you buy. The full walkthrough is in our <a href="/blog/what-is-yield-and-how-to-calculate-it/">yield guide</a>, the same one operators have been finding on search for years.</p>
+
+    <h2>What counts as a good food cost percentage</h2>
+    <p>There is no universal right answer, and anyone who gives you one number for every restaurant is guessing. Many full-service operators work against a 28 to 35 percent target, bars often run lower on beverage, and high-labor concepts can justify a lower food cost because the plate carries more prep. Treat targets as starting points. What matters more than the number is the direction it moves and whether you find out in time to react.</p>
+
+    <h2>Where every calculator, including this one, falls short</h2>
+    <p>This page tells you the truth about today. Then a vendor reprices chicken on Thursday's invoice and the truth changes, and no spreadsheet or free tool taps you on the shoulder. Costs drift, the menu stays put, and margin leaks until somebody re-keys invoices at month end.</p>
+    <p>That gap is the reason Culvana exists. The platform <a href="/#how">reads your vendor invoices the day they arrive</a>, updates every ingredient cost, and reprices every affected recipe automatically, so the number this calculator gave you stays current without anyone typing. Recipe costing is the engine; the <a href="/recipe-costing/">whole platform is built around it</a>.</p>
+
+    <h2>Common questions</h2>
+    <h3>What is the food cost formula?</h3>
+    <p>Per plate: portion cost divided by menu price, times 100. Per period: beginning inventory plus purchases minus ending inventory, divided by food sales, times 100. Both are built into this page.</p>
+    <h3>What is a good food cost percentage?</h3>
+    <p>Common working targets sit around 28 to 35 percent for full service, but concept, rent and labor decide what your menu can carry. Use benchmarks to start, your own P&amp;L to steer.</p>
+    <h3>How do I account for yield or trim waste?</h3>
+    <p>Divide the as-purchased cost by the yield percentage. $1.20 a pound at 88% yield is $1.36 a pound served. Every ingredient row above has a yield field.</p>
+    <h3>Why does my food cost change when my menu did not?</h3>
+    <p>Ingredient prices moved underneath it. That is normal; the problem is finding out weeks later. Invoice-driven costing closes that gap.</p>
+    <h3>Is this calculator really free?</h3>
+    <p>Yes. No signup, no email gate, and nothing you type leaves your browser or gets stored.</p>
+
+    <div class="article-cta">
+      <h3>Now see it with your own invoices</h3>
+      <p>Run the <a href="/savings.html">savings calculator</a> with what you actually pay today, or <a href="/#talk">book a demo</a> and we will cost one of your real recipes live, then show you what happens when Thursday's invoice reprices it on its own. Pricing is simple: <a href="/pricing/">$199 a location, everything included</a>.</p>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <img src="/culvana-lockup.svg" alt="Culvana" height="26" style="filter:brightness(0) invert(1);margin-bottom:12px">
+        <p style="font-size:13.5px;max-width:280px">Culinary nirvana for your operation. One platform, no hardware, no paper.</p>
+      </div>
+      <div><h4>Platform</h4><ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#who">Who it's for</a></li>
+        <li><a href="/savings.html">Savings calculator</a></li>
+        <li><a href="/food-cost-calculator/">Food cost calculator</a></li>
+        <li><a href="/pricing/">Pricing</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about/">About Culvana</a></li>
+        <li><a href="/#talk">Talk to us</a></li>
+        <li><a href="tel:+13059827075">1-305-982-7075</a></li>
+        <li><a href="/launch.html">Culvana Login</a></li>
+        <li><a href="https://shared.recipe-costing.net/">Recipe Costing Login</a></li>
+      </ul></div>
+      <div><h4>Payments</h4><ul>
+        <li>Powered by Elavon</li>
+        <li>A U.S. Bancorp company</li>
+        <li>Member FDIC</li>
+      </ul></div>
+    </div>
+    <div class="base">&copy; Culvana <span id="yr"></span>. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function(){
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  var paint = function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀' : '☾';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  paint();
+  btn.addEventListener('click', function(){
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cv-theme', next); } catch(e){}
+    paint();
+  });
+})();
+(function(){
+  var b = document.getElementById('burger'), l = document.getElementById('navlinks');
+  if (!b || !l) return;
+  b.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.textContent = open ? '✕' : '☰';
+  });
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ l.classList.remove('open'); b.setAttribute('aria-expanded','false'); b.textContent='☰'; });
+  });
+})();
+
+/* ---------- calculator ---------- */
+(function(){
+  var money = function(n){ return '$' + (isFinite(n) ? n : 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); };
+  var pct = function(n){ return (isFinite(n) ? n : 0).toFixed(1).replace(/\.0$/,'') + '%'; };
+  var num = function(el){ var v = parseFloat(el.value); return isFinite(v) ? v : 0; };
+
+  /* line cost = unit cost x qty / (yield/100) */
+  function lineCost(cost, qty, yieldPct){
+    var y = (yieldPct > 0 && yieldPct <= 100) ? yieldPct / 100 : 1;
+    return cost * qty / y;
+  }
+
+  var body = document.getElementById('ingBody');
+  var seed = [
+    ['Ground beef 80/20 (per lb)', 4.20, 0.45, 100],
+    ['Brioche bun (each)', 0.45, 1, 100],
+    ['American cheese (per slice)', 0.175, 2, 100],
+    ['Lettuce, tomato, onion, pickle', 0.30, 1, 100],
+    ['House sauce', 0.10, 1, 100]
+  ];
+
+  function addRow(vals){
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text" aria-label="Ingredient name" placeholder="Ingredient"></td>' +
+      '<td><input type="number" inputmode="decimal" min="0" step="any" aria-label="Cost per unit in dollars" placeholder="0.00"></td>' +
+      '<td><input type="number" inputmode="decimal" min="0" step="any" aria-label="Quantity used" placeholder="0"></td>' +
+      '<td><input type="number" inputmode="decimal" min="1" max="100" step="any" aria-label="Yield percent" placeholder="100"></td>' +
+      '<td class="linecost">$0.00</td>' +
+      '<td><button type="button" class="rowdel" aria-label="Remove ingredient">✕</button></td>';
+    var ins = tr.querySelectorAll('input');
+    if (vals){ ins[0].value = vals[0]; ins[1].value = vals[1]; ins[2].value = vals[2]; ins[3].value = vals[3]; }
+    tr.addEventListener('input', recalc);
+    tr.querySelector('.rowdel').addEventListener('click', function(){ tr.remove(); recalc(); });
+    body.appendChild(tr);
+  }
+
+  function recalc(){
+    var total = 0;
+    body.querySelectorAll('tr').forEach(function(tr){
+      var ins = tr.querySelectorAll('input');
+      var c = lineCost(parseFloat(ins[1].value) || 0, parseFloat(ins[2].value) || 0, parseFloat(ins[3].value) || 100);
+      tr.querySelector('.linecost').textContent = money(c);
+      total += c;
+    });
+    var servings = num(document.getElementById('servings')) || 1;
+    var portion = total / servings;
+    var target = num(document.getElementById('targetPct'));
+    var price = num(document.getElementById('menuPrice'));
+
+    document.getElementById('outTotal').textContent = money(total);
+    document.getElementById('outPortion').textContent = money(portion);
+
+    var sug = target > 0 ? portion / (target / 100) : 0;
+    document.getElementById('outSuggest').textContent = money(sug);
+    document.getElementById('outSuggestNote').textContent = target > 0 ? 'to hit ' + pct(target) + ' food cost' : '';
+
+    if (price > 0){
+      var fc = portion / price * 100;
+      document.getElementById('outPct').textContent = pct(fc);
+      document.getElementById('outPctNote').textContent = 'at ' + money(price) + ' menu price';
+    } else {
+      document.getElementById('outPct').textContent = '…';
+      document.getElementById('outPctNote').textContent = 'enter a menu price';
+    }
+
+    /* keep the per-plate pane in sync with the recipe above */
+    var pp = document.getElementById('pPortion');
+    if (pp && !pp.matches(':focus')) { pp.value = portion ? portion.toFixed(2) : ''; }
+    recalcFc();
+  }
+
+  ['servings','targetPct','menuPrice'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+  document.getElementById('addRow').addEventListener('click', function(){ addRow(); });
+  seed.forEach(addRow);
+
+  /* --- percentage calculator --- */
+  var plateMode = true;
+  function recalcFc(){
+    var fc, note = '';
+    if (plateMode){
+      var pc = num(document.getElementById('pPortion')), pr = num(document.getElementById('pPrice'));
+      fc = pr > 0 ? pc / pr * 100 : 0;
+      note = pr > 0 ? money(pc) + ' plate at ' + money(pr) : 'enter both numbers';
+      document.getElementById('usageBox').hidden = true;
+    } else {
+      var used = num(document.getElementById('bInv')) + num(document.getElementById('purch')) - num(document.getElementById('eInv'));
+      var s = num(document.getElementById('sales'));
+      fc = s > 0 ? used / s * 100 : 0;
+      note = 'inventory + purchases − ending, over sales';
+      document.getElementById('outUsage').textContent = money(used);
+      document.getElementById('usageBox').hidden = false;
+    }
+    document.getElementById('outFc').textContent = pct(fc);
+    document.getElementById('outFcNote').textContent = note;
+  }
+  function setMode(plate){
+    plateMode = plate;
+    document.getElementById('modePlate').setAttribute('aria-pressed', plate ? 'true' : 'false');
+    document.getElementById('modePeriod').setAttribute('aria-pressed', plate ? 'false' : 'true');
+    document.getElementById('platePane').hidden = !plate;
+    document.getElementById('periodPane').hidden = plate;
+    recalcFc();
+  }
+  document.getElementById('modePlate').addEventListener('click', function(){ setMode(true); });
+  document.getElementById('modePeriod').addEventListener('click', function(){ setMode(false); });
+  ['pPortion','pPrice','bInv','purch','eInv','sales'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', recalcFc);
+  });
+
+  recalc();
+})();
+</script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/62b45cfc7b967b1179962215/1g688mf39';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>
